@@ -1,0 +1,65 @@
+# CakePHP specific files #
+##########################
+/config/app_local.php
+/config/.env
+/logs/*
+/tmp/*
+/vendor/*
+/bin/*
+/config/*
+/plugins/*
+/resources/*
+/tests/*
+# Esign Bypass related files #
+/src/Controller/EsignController.php
+/templates/element/declaration-message_boxes.php
+/templates/element/esign_views/declaration-message-before-grant.php
+/templates/element/esign_views/declaration-message_boxes.php
+/templates/element/esign_views/renewal_grant_declaration_message.php
+/templates/element/esign_views/re_esign_pdf_popup.php
+/templates/element/replica/replica_approval_esign_consent.php
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+# Icon must end with two \r
+Icon
+ehthumbs.db
+Thumbs.db
+.directory
+
+# Tool specific files #
+#######################
+# PHPUnit
+.phpunit.cache
+tests.sqlite
+# vim
+*~
+*.swp
+*.swo
+# sublime text & textmate
+*.sublime-*
+*.stTheme.cache
+*.tmlanguage.cache
+*.tmPreferences.cache
+# Eclipse
+.settings/*
+# JetBrains, aka PHPStorm, IntelliJ IDEA
+.idea/*
+# NetBeans
+nbproject/*
+# Visual Studio Code
+.vscode
+# nova
+.nova
+# Sass preprocessor
+.sass-cache/
+# node
+/node_modules/*
+# yarn
+yarn-debug.log
+yarn-error.log

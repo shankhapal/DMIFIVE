@@ -1,0 +1,20 @@
+.btn{margin-left:15px;}
+#comment_to label{margin-right:15px;}
+.card{padding-bottom: 15px;}
+.or-section {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.or-section::before, .or-section::after {
+    content: "";
+    flex: 1;
+    border-top: 2px solid #000;
+}
+
+.or-text {
+    padding: 10px;
+    font-weight: bold;
+}

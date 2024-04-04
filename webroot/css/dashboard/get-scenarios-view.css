@@ -1,0 +1,174 @@
+#table_outer {
+  overflow-x: scroll;
+}
+
+#table_outer th {
+  border: 1px solid gainsboro;
+}
+
+#table_container_1 {
+  min-width: 200%;
+}
+
+section {
+  background-color: #eee;
+  padding: 10px;
+}
+
+.form-horizontal {
+  padding-bottom: 10px;
+}
+
+.wd1080 {
+  width: 1080px !important;
+}
+
+.box {
+
+  padding: 20px;
+  display: none;
+  margin-top: 20px;
+}
+
+.form-middle {
+  padding-top: 5px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.row {
+  margin-left: -5px;
+  margin-right: -5px;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 5px;
+}
+
+/* Clearfix (clear floats) */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 16px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+input[type="radio"] {
+  margin: 0 10px 0 10px;
+}
+.fieldgroup{
+  margin: auto;
+}
+
+/* $grey: #E9E9E9;
+$dark-grey: #323B40; */
+
+.container {
+  padding: 2rem 0rem;
+}
+
+h4 {
+  margin: 3rem 0rem 2rem;
+}
+
+.image-parent {
+  background-color: gray;
+  max-width: 400px;
+  min-height: 300px;
+}
+
+.img-wrapper {
+  width: 10%;
+  margin: 0rem 1.5rem 0rem 0rem;
+}
+
+.img-wrapper-20 {
+  width: 20%;
+  margin: 0rem 1.5rem 0rem 0rem;
+}
+
+.c-container {
+  background-color: rgb(233 233 233);;
+  border-radius: 0.5rem;
+  padding: 1.2rem 1.2rem;
+  margin: 1rem 0rem;
+}
+
+.overlay-dark {
+  background-color: rgba(black, 0.4);
+}
+
+.overlay-grey {
+  background-color: rgba(#596164, 0.4);
+}
+
+.overlay-yellow {
+  background-color: rgba(#fee140, 0.4);
+}
+
+.overlay-orange {
+  background-color: rgba(#c43a30, 0.4);
+}
+
+.overlay-blue-gradient {
+  background-image: linear-gradient(135deg, rgba(#96deda, 0.5) 0%, rgba(#537895, 0.7) 100%);
+}
+.printing_press {
+  display: none;
+}
+.ca_non_bevo{
+  display: none;
+}
+.ca_bevo{
+  display: none;
+}
+.lab_d{
+  display: none;
+}
+.lab_e {
+  display: none;
+}
+.scenarios p {
+  background-color: #eee;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 750px;
+  margin: 10px auto;
+  padding: 15px;
+  border-right: 5px solid #007bff;
+  position: relative;
+  counter-increment: number;
+}
+.new1{
+  border-top: 1px solid red;
+}
+.scenarios-title{
+   text-align: center;
+}
+.scenarios p::before {
+  content: counter(number);
+  background-color: #007bff;
+  border-left: 1px solid #EBD671;
+  border-radius: 5px;
+  padding: 15px;
+  color: white;
+  position: absolute;
+  left: -30px;
+  top: 0px;
+}

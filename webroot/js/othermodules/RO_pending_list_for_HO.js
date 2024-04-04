@@ -1,0 +1,1 @@
+$('#ro_wise_list_to_ho').DataTable({"ordering": false});

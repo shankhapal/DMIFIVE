@@ -9,20 +9,56 @@
 
 	class AdvancepaymentController extends AppController{
 
+        private $DmiUsers;
+        private $DmiPaoDetails;
+        private $DmiSmsEmailTemplates;
+        private $DmiAdvPaymentTransactions;
+        private $DmiAdvPaymentDetails;
+        private $DmiFirms;
+        private $DmiUserRoles;
 		public function initialize(): void {
 			parent::initialize();
+            // added by shankhpal on 27-03-2024
+            $components = [
+                'RequestHandler',
+                'Createcaptcha',
+                'Paymentdetails',
+                'Customfunctions',
+                'Beforepageload',
+                'AqcmsWrapper',
+            ];
 
-			$this->loadComponent('RequestHandler');
-			$this->loadComponent('Createcaptcha');
-			$this->loadComponent('Paymentdetails');
-			$this->loadComponent('Customfunctions');
-			$this->loadComponent('Beforepageload');
-            $this->loadComponent('AqcmsWrapper');
+            foreach($components as $component){
+                $this->loadComponent($component);
+            }
+
 
 			$this->viewBuilder()->setHelpers(['Form','Html','Time']);
 			$this->viewBuilder()->setLayout('secondary_customer');
 
+            // Call the loadAllModels method to load necessary models.
+            $this->loadAllModels();
+
 		}
+
+
+
+        /**
+         * Loads all necessary models for the current controller.
+         * This method is responsible for loading models required for the controller's functionality.
+         * Author: Shankhpal Shende
+         * Date: 04-04-2024
+         */
+        private function loadAllModels(): void {
+
+            $this->DmiUsers = $this->AqcmsWrapper->customeLoadModel('DmiUsers');
+			$this->DmiPaoDetails = $this->AqcmsWrapper->customeLoadModel('DmiPaoDetails');
+			$this->DmiSmsEmailTemplates = $this->AqcmsWrapper->customeLoadModel('DmiSmsEmailTemplates');
+			$this->DmiAdvPaymentTransactions = $this->AqcmsWrapper->customeLoadModel('DmiAdvPaymentTransactions');
+			$this->DmiAdvPaymentDetails = $this->AqcmsWrapper->customeLoadModel('DmiAdvPaymentDetails');
+            $this->DmiFirms = $this->AqcmsWrapper->customeLoadModel('DmiFirms');
+			$this->DmiUserRoles = $this->AqcmsWrapper->customeLoadModel('DmiUserRoles');
+        }
 
 		//Before Filter Method
 		public function beforeFilter($event) {
@@ -33,8 +69,6 @@
 			$this->set('customer_last_login', $customer_last_login);
 
 			$customer_id = $this->Session->read('username');
-			$this->loadModel('DmiFirms');
-			$this->loadModel('DmiUserRoles');
 
 			 //Show button on Side menu
 			$this->Beforepageload->showButtonOnSecondaryHome();
@@ -93,9 +127,6 @@
 
 			//Set the Layout
 			$this->viewBuilder()->setLayout('secondary_customer');
-			//Load Models
-			$this->loadModel('DmiAdvPaymentTransactions');
-			$this->loadModel('DmiAdvPaymentDetails');
 			//Session Varible
 			$customer_id = $this->Session->read('username');
 
@@ -151,11 +182,6 @@
 			$this->Session->write('application_type',1);
 
 			$application_type = $this->Session->read('application_type');
-
-			//Load Models
-			$this->loadModel('DmiFirms');
-			$this->loadModel('DmiAdvPaymentDetails');
-			$this->loadModel('DmiSmsEmailTemplates');
 
 			//Set the layout
 			$this->viewBuilder()->setLayout('secondary_customer');
@@ -250,10 +276,6 @@
 		public function advPaymentVerification() {
 
 			$this->viewBuilder()->setLayout('admin_dashboard');
-
-			$this->loadModel('DmiUsers');
-			$this->loadModel('DmiPaoDetails');
-			$this->loadModel('DmiAdvPaymentDetails');
 
 			$paymemtReplied = array();
 			$paymentConfirmed = array();

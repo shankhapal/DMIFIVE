@@ -20,7 +20,90 @@ use MyCustomPDFWithWatermark; //added this by laxmi for watermark img 18-07/2023
 
 class ApplicationformspdfsController extends AppController{
 
-	var $name = 'Applicationformspdfs';
+    private $DmiCaRenewalCommodityDetails;
+    private $DmiLaboratorySiteinspectionReports;
+    private $DmiPrintingSiteinspectionReports;
+    private $DmiSiteinspectionPremisesDetails;
+    private $DmiSiteinspectionLaboratoryDetails;
+    private $DmiSiteinspectionOtherDetails;
+    private $DmiChangeLabFirmDetails;
+    private $DmiChangeLabOtherDetails;
+    private $DmiPrintingBusinessYears;
+    private $DmiPrintingUnitDetails;
+    private $DmiApplicantPaymentDetails;
+    private $DmiBusinessTypes;
+    private $DmiCustomerMachineryProfiles;
+    private $DmiAllMachinesDetails;
+    private $DmiMachineTypes;
+    private $DmiAllConstituentOilsDetails;
+    private $DmiAllTanksDetails;
+    private $DmiTankShapes;
+    private $DmiLaboratoryTypes;
+    private $DmiCustomerPackingDetails;
+    private $DmiCrushingRefiningPeriods;
+    private $DmiNablDates;
+    private $DmiChangeApplDetails;
+    private $DmiPrintingFirmProfiles;
+    private $DmiCustomerFirmProfiles;
+    private $DmiCustomerPremisesProfiles;
+    private $DmiCustomerTblDetails;
+    private $DmiRenewalFinalSubmits;
+    private $DmiCustomerLaboratoryDetails;
+    private $DmiPrintingRenewalDetails;
+    private $DmiRenewalApplicantPaymentDetails;
+    private $DmiLaboratoryFirmDetails;
+    private $DmiAllDirectorsDetails;
+    private $DmiSurrenderFinalSubmits;
+    private $DmiECodeForApplicants;
+    private $DmiECodeFinalSubmits;
+    private $DmiECodeSiteinspectionReports;
+    private $Dmi15DigitFinalSubmits;
+    private $Dmi15DigitSiteinspectionReports;
+    private $DmiChangeSelectedFields;
+    private $DmiRenBevoToMseoLogs;
+    private $DmiRtiPackerDetails;
+    private $DmiRoutineInspectionPpReports;
+    private $DmiAllTblsDetails;
+    private $DmiRtiCaPackerDetails;
+    private $DmiCaPpLabMapings;
+    private $DmiCheckSamples;
+    private $DmiSurrenderFormsDetails;
+    private $DmiLaboratoryOtherDetails;
+    private $DmiAdpPersonDetails;
+    private $DmiAdpFinalSubmits;
+    private $DmiRejectedApplLogs;
+    private $DmiAplGrantCertificatePdfs;
+    private $DmiApplicationTypes;
+    private $DmiApplicationCharges;
+    private $DmiLaboratoryRenewalOtherDetails;
+    private $DmiLxrRenewalDetails;
+    private $DmiLaboratoryChemistsDetails;
+    private $DmiLxrPaymentDetails;
+    private $DmiChemistRalToRoLogs;
+    private $DmiChemistTrainingAtRo;
+    private $DmiCustomers;
+    private $DmiChemistPaymentDetails;
+    private $DmiUserRoles;
+    private $DmiChemistRoToRalLogs;
+    private $DmiUsers;
+    private $DmiChemistProfileDetails;
+    private $DmiChemistRegistrations;
+    private $DmiRoOffices;
+    private $DmiRtiLaboratoryDetails;
+    private $DmiPackingTypes;
+    private $DmiPrintingPremisesProfiles;
+    private $DmiBgrCommodityReports;
+    private $DmiStates;
+    private $DmiFirms;
+    private $DmiDistricts;
+    private $DmiGrantCertificatesPdfs;
+    private $MCommodity;
+    private $MCommodityCategory;
+    private $MGradeDesc;
+    private $CommGrade;
+    private $DmiBgrCommodityReportsAddmore;
+    private $DmiApplWithRoMappings;
+    private $DmiAplFormDetails;
 
 	public function initialize(): void
 	{
@@ -28,11 +111,122 @@ class ApplicationformspdfsController extends AppController{
 
 		parent::initialize();
 
-		$this->loadComponent('Customfunctions');
-		$this->loadComponent('Mastertablecontent');
+        // added by shankhpal on 27-03-2024
+        $components = [
+            'Customfunctions',
+            'Mastertablecontent',
+            'Randomfunctions',
+            'AqcmsWrapper',
+        ];
+
+        foreach($components as $component){
+            $this->loadComponent($component);
+        }
+
 		$this->viewBuilder()->setHelpers(['Form','Html']);
 		$this->viewBuilder()->setLayout('pdf_layout');
+
+        // Call the loadAllModels method to load necessary models.
+        $this->loadAllModels();
 	}
+
+
+
+    /**
+     * Loads all necessary models for the current controller.
+     * This method is responsible for loading models required for the controller's functionality.
+     * Author: Shankhpal Shende
+     * Date: 04-04-2024
+     */
+    private function loadAllModels(): void {
+
+        $this->DmiCaRenewalCommodityDetails = $this->AqcmsWrapper->customeLoadModel('DmiCaRenewalCommodityDetails');
+		$this->DmiLaboratorySiteinspectionReports = $this->AqcmsWrapper->customeLoadModel('DmiLaboratorySiteinspectionReports');
+		$this->DmiPrintingSiteinspectionReports = $this->AqcmsWrapper->customeLoadModel('DmiPrintingSiteinspectionReports');
+		$this->DmiSiteinspectionPremisesDetails = $this->AqcmsWrapper->customeLoadModel('DmiSiteinspectionPremisesDetails');
+		$this->DmiSiteinspectionLaboratoryDetails = $this->AqcmsWrapper->customeLoadModel('DmiSiteinspectionLaboratoryDetails');
+		$this->DmiSiteinspectionOtherDetails = $this->AqcmsWrapper->customeLoadModel('DmiSiteinspectionOtherDetails');
+		$this->DmiChangeLabFirmDetails = $this->AqcmsWrapper->customeLoadModel('DmiChangeLabFirmDetails');
+		$this->DmiChangeLabOtherDetails = $this->AqcmsWrapper->customeLoadModel('DmiChangeLabOtherDetails');
+		$this->DmiPrintingBusinessYears = $this->AqcmsWrapper->customeLoadModel('DmiPrintingBusinessYears');
+		$this->DmiPrintingUnitDetails = $this->AqcmsWrapper->customeLoadModel('DmiPrintingUnitDetails');
+		$this->DmiApplicantPaymentDetails = $this->AqcmsWrapper->customeLoadModel('DmiApplicantPaymentDetails');
+		$this->DmiBusinessTypes = $this->AqcmsWrapper->customeLoadModel('DmiBusinessTypes');
+		$this->DmiCustomerMachineryProfiles = $this->AqcmsWrapper->customeLoadModel('DmiCustomerMachineryProfiles');
+		$this->DmiAllMachinesDetails = $this->AqcmsWrapper->customeLoadModel('DmiAllMachinesDetails');
+		$this->DmiMachineTypes = $this->AqcmsWrapper->customeLoadModel('DmiMachineTypes');
+		$this->DmiAllConstituentOilsDetails = $this->AqcmsWrapper->customeLoadModel('DmiAllConstituentOilsDetails');
+		$this->DmiAllTanksDetails = $this->AqcmsWrapper->customeLoadModel('DmiAllTanksDetails');
+		$this->DmiTankShapes = $this->AqcmsWrapper->customeLoadModel('DmiTankShapes');
+		$this->DmiLaboratoryTypes = $this->AqcmsWrapper->customeLoadModel('DmiLaboratoryTypes');
+		$this->DmiCustomerPackingDetails = $this->AqcmsWrapper->customeLoadModel('DmiCustomerPackingDetails');
+		$this->DmiCrushingRefiningPeriods = $this->AqcmsWrapper->customeLoadModel('DmiCrushingRefiningPeriods');
+        $this->DmiNablDates = $this->AqcmsWrapper->customeLoadModel('DmiNablDates');
+        $this->DmiChangeApplDetails = $this->AqcmsWrapper->customeLoadModel('DmiChangeApplDetails');
+		$this->DmiPrintingFirmProfiles = $this->AqcmsWrapper->customeLoadModel('DmiPrintingFirmProfiles');
+        $this->DmiCustomerFirmProfiles = $this->AqcmsWrapper->customeLoadModel('DmiCustomerFirmProfiles');
+        $this->DmiCustomerPremisesProfiles = $this->AqcmsWrapper->customeLoadModel('DmiCustomerPremisesProfiles');
+        $this->DmiCustomerTblDetails = $this->AqcmsWrapper->customeLoadModel('DmiCustomerTblDetails');
+        $this->DmiRenewalFinalSubmits = $this->AqcmsWrapper->customeLoadModel('DmiRenewalFinalSubmits');
+        $this->DmiCustomerLaboratoryDetails = $this->AqcmsWrapper->customeLoadModel('DmiCustomerLaboratoryDetails');
+        $this->DmiPrintingRenewalDetails = $this->AqcmsWrapper->customeLoadModel('DmiPrintingRenewalDetails');
+        $this->DmiRenewalApplicantPaymentDetails = $this->AqcmsWrapper->customeLoadModel('DmiRenewalApplicantPaymentDetails');
+		$this->DmiLaboratoryFirmDetails = $this->AqcmsWrapper->customeLoadModel('DmiLaboratoryFirmDetails');
+		$this->DmiAllDirectorsDetails = $this->AqcmsWrapper->customeLoadModel('DmiAllDirectorsDetails');
+		$this->DmiSurrenderFinalSubmits = $this->AqcmsWrapper->customeLoadModel('DmiSurrenderFinalSubmits');
+        $this->DmiECodeForApplicants = $this->AqcmsWrapper->customeLoadModel('DmiECodeForApplicants');
+        $this->DmiECodeFinalSubmits = $this->AqcmsWrapper->customeLoadModel('DmiECodeFinalSubmits');
+		$this->DmiECodeSiteinspectionReports = $this->AqcmsWrapper->customeLoadModel('DmiECodeSiteinspectionReports');
+        $this->Dmi15DigitFinalSubmits = $this->AqcmsWrapper->customeLoadModel('Dmi15DigitFinalSubmits');
+		$this->Dmi15DigitSiteinspectionReports = $this->AqcmsWrapper->customeLoadModel('Dmi15DigitSiteinspectionReports');
+        $this->DmiChangeSelectedFields = $this->AqcmsWrapper->customeLoadModel('DmiChangeSelectedFields');
+        $this->DmiRenBevoToMseoLogs = $this->AqcmsWrapper->customeLoadModel('DmiRenBevoToMseoLogs');
+        $this->DmiRtiPackerDetails = $this->AqcmsWrapper->customeLoadModel('DmiRtiPackerDetails');
+        $this->DmiRoutineInspectionPpReports = $this->AqcmsWrapper->customeLoadModel('DmiRoutineInspectionPpReports');
+		$this->DmiAllTblsDetails = $this->AqcmsWrapper->customeLoadModel('DmiAllTblsDetails');
+        $this->DmiRtiCaPackerDetails = $this->AqcmsWrapper->customeLoadModel('DmiRtiCaPackerDetails');
+		$this->DmiCaPpLabMapings = $this->AqcmsWrapper->customeLoadModel('DmiCaPpLabMapings');
+		$this->DmiCheckSamples = $this->AqcmsWrapper->customeLoadModel('DmiCheckSamples');
+		$this->DmiSurrenderFormsDetails = $this->AqcmsWrapper->customeLoadModel('DmiSurrenderFormsDetails');
+		$this->DmiLaboratoryOtherDetails = $this->AqcmsWrapper->customeLoadModel('DmiLaboratoryOtherDetails');
+		$this->DmiAdpPersonDetails = $this->AqcmsWrapper->customeLoadModel('DmiAdpPersonDetails');
+		$this->DmiAdpFinalSubmits = $this->AqcmsWrapper->customeLoadModel('DmiAdpFinalSubmits');
+        $this->DmiRejectedApplLogs = $this->AqcmsWrapper->customeLoadModel('DmiRejectedApplLogs');
+        $this->DmiAplGrantCertificatePdfs = $this->AqcmsWrapper->customeLoadModel('DmiAplGrantCertificatePdfs');
+        $this->DmiApplicationTypes = $this->AqcmsWrapper->customeLoadModel('DmiApplicationTypes');
+		$this->DmiApplicationCharges = $this->AqcmsWrapper->customeLoadModel('DmiApplicationCharges');
+		$this->DmiLaboratoryRenewalOtherDetails = $this->AqcmsWrapper->customeLoadModel('DmiLaboratoryRenewalOtherDetails');
+		$this->DmiLxrRenewalDetails = $this->AqcmsWrapper->customeLoadModel('DmiLxrRenewalDetails');
+		$this->DmiLaboratoryChemistsDetails = $this->AqcmsWrapper->customeLoadModel('DmiLaboratoryChemistsDetails');
+		$this->DmiLxrPaymentDetails = $this->AqcmsWrapper->customeLoadModel('DmiLxrPaymentDetails');
+		$this->DmiChemistRalToRoLogs = $this->AqcmsWrapper->customeLoadModel('DmiChemistRalToRoLogs');
+		$this->DmiChemistTrainingAtRo = $this->AqcmsWrapper->customeLoadModel('DmiChemistTrainingAtRo');
+		$this->DmiCustomers = $this->AqcmsWrapper->customeLoadModel('DmiCustomers');
+		$this->DmiChemistPaymentDetails = $this->AqcmsWrapper->customeLoadModel('DmiChemistPaymentDetails');
+		$this->DmiUserRoles = $this->AqcmsWrapper->customeLoadModel('DmiUserRoles');
+		$this->DmiChemistRoToRalLogs = $this->AqcmsWrapper->customeLoadModel('DmiChemistRoToRalLogs');
+		$this->DmiUsers = $this->AqcmsWrapper->customeLoadModel('DmiUsers');
+		$this->DmiChemistProfileDetails = $this->AqcmsWrapper->customeLoadModel('DmiChemistProfileDetails');
+		$this->DmiChemistRegistrations = $this->AqcmsWrapper->customeLoadModel('DmiChemistRegistrations');
+		$this->DmiRoOffices = $this->AqcmsWrapper->customeLoadModel('DmiRoOffices');
+		$this->DmiRtiLaboratoryDetails = $this->AqcmsWrapper->customeLoadModel('DmiRtiLaboratoryDetails');
+        $this->DmiPackingTypes = $this->AqcmsWrapper->customeLoadModel('DmiPackingTypes');
+        $this->DmiPrintingPremisesProfiles = $this->AqcmsWrapper->customeLoadModel('DmiPrintingPremisesProfiles');
+        $this->DmiBgrCommodityReports = $this->AqcmsWrapper->customeLoadModel('DmiBgrCommodityReports');
+        $this->DmiStates = $this->AqcmsWrapper->customeLoadModel('DmiStates');
+        $this->DmiFirms = $this->AqcmsWrapper->customeLoadModel('DmiFirms');
+        $this->DmiDistricts = $this->AqcmsWrapper->customeLoadModel('DmiDistricts');
+        $this->DmiGrantCertificatesPdfs = $this->AqcmsWrapper->customeLoadModel('DmiGrantCertificatesPdfs');
+        $this->MCommodity = $this->AqcmsWrapper->customeLoadModel('MCommodity');
+        $this->MCommodityCategory = $this->AqcmsWrapper->customeLoadModel('MCommodityCategory');
+        $this->MGradeDesc = $this->AqcmsWrapper->customeLoadModel('MGradeDesc');
+        $this->CommGrade = $this->AqcmsWrapper->customeLoadModel('CommGrade');
+        $this->DmiBgrCommodityReportsAddmore = $this->AqcmsWrapper->customeLoadModel('DmiBgrCommodityReportsAddmore');
+        $this->DmiApplWithRoMappings = $this->AqcmsWrapper->customeLoadModel('DmiApplWithRoMappings');
+        $this->DmiAplFormDetails = $this->AqcmsWrapper->customeLoadModel('DmiAplFormDetails');
+
+
+    }
 
 	//method to generate pdf view for CA application
 
@@ -475,7 +669,7 @@ class ApplicationformspdfsController extends AppController{
 				//added on 23-05-2023 by Amol
 				if ($application_type == 3) {
 
-					$this->loadModel('DmiChangeApplDetails');
+
 					$this->DmiChangeApplDetails->updateChangeDetailsAftergrant($customer_id);
 				}
 
@@ -518,11 +712,11 @@ class ApplicationformspdfsController extends AppController{
 				//if application type is 13 that is for lab export renewal flow (LXR) get the certificate valid upto date from the other table : Akash Thakre [21-09-2023]
 				if ($this->Session->read('application_type') == 13) {
 
-					$this->loadModel('DmiLxrRenewalDetails');
+
 					$new_date = $this->DmiLxrRenewalDetails->find()->select(['nabl_accreditated_upto'])->where(['customer_id IS' => $customer_id, 'form_status' => 'approved'])->order('id DESC')->first();
 
 					if (!empty($new_date)) {
-						$this->loadModel('DmiNablDates');
+
 						$this->DmiNablDates->updateNablDate($customer_id,$new_date['nabl_accreditated_upto']);
 					}
 				}
@@ -573,7 +767,7 @@ class ApplicationformspdfsController extends AppController{
 				//This record's status was updated to "pending" after payment confirmation till grant table entry. and here updated again to "confirmed".
 				//in "PaymentVerificationController" function "inspectPaymentModes()" for appl type 2 on payment confirmation.
 				//applied on 05-04-2023 by Amol, to avoid payment approval without grant table entry issue.
-				$this->loadModel('DmiRenewalApplicantPaymentDetails');
+
 				$getLastIdRecord = $this->DmiRenewalApplicantPaymentDetails->find('all',array('fields'=>array('id','payment_confirmation'),'conditions'=>array('customer_id'=>$customer_id),'order'=>'id desc'))->first();
 				if ($getLastIdRecord['payment_confirmation']=='pending') {
 
@@ -642,28 +836,6 @@ class ApplicationformspdfsController extends AppController{
 
 	public function caFormsPdf() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiStates');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('DmiCustomerFirmProfiles');
-		$this->loadModel('DmiBusinessTypes');
-		$this->loadModel('DmiCustomerPremisesProfiles');
-		$this->loadModel('DmiCustomerMachineryProfiles');
-		$this->loadModel('DmiAllMachinesDetails');
-		$this->loadModel('DmiMachineTypes');
-		$this->loadModel('DmiAllConstituentOilsDetails');
-		$this->loadModel('DmiAllTanksDetails');
-		$this->loadModel('DmiTankShapes');
-		$this->loadModel('DmiCustomerLaboratoryDetails');
-		$this->loadModel('DmiCustomerTblDetails');
-		$this->loadModel('DmiAllTblsDetails');
-		$this->loadModel('DmiCaBusinessYears');
-		$this->loadModel('DmiLaboratoryTypes');
-		$this->loadModel('DmiCustomerPackingDetails');
-		$this->loadModel('DmiCrushingRefiningPeriods');
-
 
 		//added on 27-03-2018, to set default value
 		$show_esigned_by = $this->Session->read('with_esign');
@@ -677,7 +849,7 @@ class ApplicationformspdfsController extends AppController{
 		$this->set('form_type',$form_type);
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
+
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -870,19 +1042,6 @@ class ApplicationformspdfsController extends AppController{
 
 	public function printingFormsPdf() {
 
-		$this->loadModel('DmiCustomers');
-		$this->loadModel('DmiPrintingFirmProfiles');
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiAllMachinesDetails');
-		$this->loadModel('DmiPrintingBusinessYears');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiStates');
-		$this->loadModel('DmiPackingTypes');
-		$this->loadModel('DmiBusinessTypes');
-		$this->loadModel('DmiPrintingPremisesProfiles');
-		$this->loadModel('DmiPrintingUnitDetails');
-		$this->loadModel('DmiApplicantPaymentDetails');
-
 		//added on 27-03-2018, to set default value
 		$show_esigned_by = $this->Session->read('with_esign');
 		$this->set('show_esigned_by',$show_esigned_by);
@@ -891,7 +1050,7 @@ class ApplicationformspdfsController extends AppController{
 		$this->set('customer_id',$customer_id);
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
+
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -995,17 +1154,6 @@ class ApplicationformspdfsController extends AppController{
 
 	public function laboratoryFormsPdf() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiChangeLabFirmDetails');
-		$this->loadModel('DmiLaboratoryTypes');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiStates');
-		$this->loadModel('DmiBusinessTypes');
-		$this->loadModel('DmiChangeLabOtherDetails');
-		$this->loadModel('MCommodity');
-		$this->loadModel('DmiLaboratoryChemistsDetails');
-		$this->loadModel('DmiApplicantPaymentDetails');
-
 		//added on 27-03-2018, to set default value
 		$show_esigned_by = $this->Session->read('with_esign');
 		$this->set('show_esigned_by',$show_esigned_by);
@@ -1014,7 +1162,7 @@ class ApplicationformspdfsController extends AppController{
 		$this->set('customer_id',$customer_id);
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
+
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -1101,17 +1249,6 @@ class ApplicationformspdfsController extends AppController{
 	// Report Pdfs Start
 
 	public function caReportPdf() {
-
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiUsers');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('DmiSiteinspectionPremisesDetails');
-		$this->loadModel('DmiSiteinspectionLaboratoryDetails');
-		$this->loadModel('DmiCustomerLaboratoryDetails');
-		$this->loadModel('DmiCustomerPremisesProfiles');
-		$this->loadModel('DmiSiteinspectionOtherDetails');
-		$this->loadModel('DmiAllDirectorsDetails');
 
 		//Apply check " customer_id available status " (Done By pravin 27/10/2017)
 		$customer_id = $this->Customfunctions->checkCustomerIdAvailable($this->Session->read('customer_id'));
@@ -1221,12 +1358,6 @@ class ApplicationformspdfsController extends AppController{
 
 	public function printingReportPdf() {
 
-		$this->loadModel('DmiUsers');
-		$this->loadModel('DmiPrintingFirmProfiles');
-		$this->loadModel('DmiPrintingPremisesProfiles');
-		$this->loadModel('DmiPrintingSiteinspectionReports');
-		$this->loadModel('DmiAllDirectorsDetails');
-
 		//Apply check " customer_id available status " (Done By pravin 27/10/2017)
 		$customer_id = $this->Customfunctions->checkCustomerIdAvailable($this->Session->read('customer_id'));
 		$this->set('customer_id',$customer_id);
@@ -1282,13 +1413,6 @@ class ApplicationformspdfsController extends AppController{
 	// laboratory Siteinspection pdf by pravin 24/05/2017
 	public function laboratoryReportPdf() {
 
-		$this->loadModel('DmiUsers');
-		$this->loadModel('DmiFirms');
-		$this->loadModel('MCommodity');
-		$this->loadModel('DmiLaboratoryFirmDetails');
-		$this->loadModel('DmiLaboratorySiteinspectionReports');
-		$this->loadModel('DmiAllDirectorsDetails');
-
 		//Apply check " customer_id available status " (Done By pravin 27/10/2017)
 		$customer_id = $this->Customfunctions->checkCustomerIdAvailable($this->Session->read('customer_id'));
 		$this->set('customer_id',$customer_id);
@@ -1339,13 +1463,6 @@ class ApplicationformspdfsController extends AppController{
 
 	public function caRenewalFormPdf() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('MCommodity');
-		$this->loadModel('DmiCaRenewalCommodityDetails');
-		$this->loadModel('DmiGrantCertificatesPdfs');
-		$this->loadModel('DmiApplicationCharges');
-		$this->loadModel('DmiRenewalApplicantPaymentDetails');
-
 		//added on 28-03-2018, to set default value
 		$show_esigned_by = $this->Session->read('with_esign');
 		$this->set('show_esigned_by',$show_esigned_by);
@@ -1354,7 +1471,7 @@ class ApplicationformspdfsController extends AppController{
 		$this->set('customer_id',$customer_id);
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
+
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -1451,12 +1568,6 @@ class ApplicationformspdfsController extends AppController{
 
 	public function printingRenewalFormPdf() {
 
-		$this->loadModel('DmiGrantCertificatesPdfs');
-		$this->loadModel('DmiPackingTypes');
-		$this->loadModel('DmiPrintingRenewalDetails');
-		$this->loadModel('DmiRenewalApplicantPaymentDetails');
-		$this->loadModel('DmiFirms');
-
 		//added on 28-03-2018, to set default value
 		$show_esigned_by = $this->Session->read('with_esign');
 		$this->set('show_esigned_by',$show_esigned_by);
@@ -1465,7 +1576,7 @@ class ApplicationformspdfsController extends AppController{
 		$this->set('customer_id',$customer_id);
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
+
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -1519,14 +1630,6 @@ class ApplicationformspdfsController extends AppController{
 
 	public function labRenewalFormPdf() {
 
-		$this->loadModel('DmiGrantCertificatesPdfs');
-		$this->loadModel('DmiApplicationCharges');
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiLaboratoryRenewalOtherDetails');
-		$this->loadModel('MCommodity');
-		$this->loadModel('DmiLaboratoryChemistsDetails');
-		$this->loadModel('DmiRenewalApplicantPaymentDetails');
-
 		//added on 28-03-2018, to set default value
 		$show_esigned_by = $this->Session->read('with_esign');
 		$this->set('show_esigned_by',$show_esigned_by);
@@ -1535,7 +1638,7 @@ class ApplicationformspdfsController extends AppController{
 		$this->set('customer_id',$customer_id);
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
+
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -1618,18 +1721,6 @@ class ApplicationformspdfsController extends AppController{
 
 	public function grantCaCertificatePdf() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiUsers');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('DmiCustomerFirmProfiles');
-		$this->loadModel('DmiCustomerPremisesProfiles');
-		$this->loadModel('DmiCustomerTblDetails');
-		$this->loadModel('DmiAllDirectorsDetails');
-		$this->loadModel('DmiRenewalFinalSubmits');
-		$this->loadModel('DmiCustomerLaboratoryDetails');
-		$this->loadModel('DmiSurrenderFinalSubmits');
-
 		$customer_id = $this->Session->read('customer_id');
 		$this->set('customer_id',$customer_id);
 
@@ -1679,7 +1770,7 @@ class ApplicationformspdfsController extends AppController{
 			array_push($sub_commodity_array,"245");
 
 			//save logs for BEVO to MSEO renewal logs
-			$this->loadModel('DmiRenBevoToMseoLogs');
+
 			$DmiRenBevoToMseoLogsEntity = $this->DmiRenBevoToMseoLogs->newEntity(
 				['customer_id'=>$customer_id,
 				'by_user'=>$this->Session->read('username'),
@@ -1748,10 +1839,9 @@ class ApplicationformspdfsController extends AppController{
 		//check if process is Change/Modification then get details from change table.
 		//because main tables will be updated with new details at last once certificate esigned.
 		//added on 13-04-2023 for change management
-		$this->loadModel('DmiChangeSelectedFields');
+
 
         //below rejected appl cond. code added on 05-02-2024 by Amol, to resolve appl. after rejection issue
-        $this->loadModel('DmiRejectedApplLogs');
         $rejectedDate = $this->DmiRejectedApplLogs->find('all',array('conditions'=>array('customer_id IS'=>$customer_id,'appl_type IS'=>3),'order'=>'id DESC'))->first();
         if(!empty($rejectedDate)){
             $rejcondition = array('date(created) >'=>$rejectedDate['created']);
@@ -1761,7 +1851,7 @@ class ApplicationformspdfsController extends AppController{
         //the $rejcondition is added on 05-02-2024 by Amol, in below query and function inputs
 		$getNoOfAppl = $this->DmiChangeSelectedFields->find('all',array('fields'=>array('id','changefields'),'conditions'=>array('customer_id IS'=>$customer_id,$rejcondition),'order'=>'id desc'))->toArray();
 		if ($this->Session->read('application_type')==3 || !empty($getNoOfAppl)) {
-			$this->loadComponent('Randomfunctions');
+
 			$this->Randomfunctions->setChangedDetailsForGrantPdf($customer_id,$customer_firm_data,$premises_data,$laboratory_data,$business_type,$rejcondition);
 
 			$this->Randomfunctions->showChangedFieldsInGrantPdfSection($customer_id,$getNoOfAppl);
@@ -1796,7 +1886,7 @@ class ApplicationformspdfsController extends AppController{
 
 		//get all records from grant table to manage multiple renewals
 		//added on 03-10-2020 by Amol
-		$this->loadModel('DmiGrantCertificatesPdfs');
+
 		$get_grant_details = $this->DmiGrantCertificatesPdfs->find('all',array('conditions'=>array('customer_id IS'=>$customer_id),'order'=>'pdf_version ASC'))->toArray();
 
 		$user_full_name = array();
@@ -1995,15 +2085,6 @@ class ApplicationformspdfsController extends AppController{
 
 	public function grantPrintingCertificatePdf() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiUsers');
-		$this->loadModel('DmiPackingTypes');
-		$this->loadModel('DmiPrintingPremisesProfiles');
-		$this->loadModel('DmiPrintingFirmProfiles');
-		$this->loadModel('DmiAllDirectorsDetails');
-		$this->loadModel('DmiRenewalFinalSubmits');
-		$this->loadModel('DmiSurrenderFinalSubmits');
-
 		$customer_id = $this->Session->read('customer_id');
 		$this->set('customer_id',$customer_id);
 
@@ -2065,10 +2146,10 @@ class ApplicationformspdfsController extends AppController{
 		//check if process is Change/Modification then get details from change table.
 		//because main tables will be updated with new details at last once certificate esigned.
 		//added on 13-04-2023 for change management
-		$this->loadModel('DmiChangeSelectedFields');
+
 
         //below rejected appl cond. code added on 05-02-2024 by Amol, to resolve appl. after rejection issue
-        $this->loadModel('DmiRejectedApplLogs');
+
         $rejectedDate = $this->DmiRejectedApplLogs->find('all',array('conditions'=>array('customer_id IS'=>$customer_id,'appl_type IS'=>3),'order'=>'id DESC'))->first();
         if(!empty($rejectedDate)){
             $rejcondition = array('date(created) >'=>$rejectedDate['created']);
@@ -2079,7 +2160,7 @@ class ApplicationformspdfsController extends AppController{
 		$getNoOfAppl = $this->DmiChangeSelectedFields->find('all',array('fields'=>array('id','changefields'),'conditions'=>array('customer_id IS'=>$customer_id,$rejcondition),'order'=>'id desc'))->toArray();
 
 		if ($this->Session->read('application_type')==3 || !empty($getNoOfAppl)) {
-			$this->loadComponent('Randomfunctions');
+
 			$this->Randomfunctions->setChangedDetailsForGrantPdf($customer_id,$customer_firm_data,$premises_data,null,$business_type,$rejcondition);
 
 			$this->Randomfunctions->showChangedFieldsInGrantPdfSection($customer_id,$getNoOfAppl);
@@ -2116,7 +2197,6 @@ class ApplicationformspdfsController extends AppController{
 
 		//get all records from grant table to manage multiple renewals
 		//added on 0-10-2020 by Amol
-		$this->loadModel('DmiGrantCertificatesPdfs');
 		$get_grant_details = $this->DmiGrantCertificatesPdfs->find('all',array('conditions'=>array('customer_id IS'=>$customer_id),'order'=>'pdf_version ASC'))->toArray();
 
 		$user_full_name = array();
@@ -2293,14 +2373,6 @@ class ApplicationformspdfsController extends AppController{
 
 	public function grantLaboratoryCertificatePdf() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiUsers');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('DmiLaboratoryFirmDetails');
-		$this->loadModel('DmiAllDirectorsDetails');
-		$this->loadModel('DmiSurrenderFinalSubmits');
-		$this->loadModel('DmiLaboratoryOtherDetails');
 
 		//Apply check " customer_id available status " (Done By pravin 27/10/2017)
 		$customer_id = $this->Session->read('customer_id');
@@ -2335,15 +2407,15 @@ class ApplicationformspdfsController extends AppController{
 		} else {
 			$DmiRenewalFinalSubmits = 'DmiRenewalFinalSubmits';
 		}
-		$this->loadModel($DmiRenewalFinalSubmits);
 
+        $DmiRenewalFinalSubmits = $this->AqcmsWrapper->customeLoadModel($DmiRenewalFinalSubmits);
 
 		// Fetch data from DMI firm Table
 		$customer_firm_data = $this->DmiFirms->firmDetails($customer_id);
 		$this->set('customer_firm_data',$customer_firm_data);
 
 		// Primary applicant details, added on 31-10-2023 by Amol : [LIVE : 01-12-2023]
-		$this->loadModel('DmiCustomers');
+
 		$primaryAppData = $this->DmiCustomers->find('all',
 						array('fields'=>array('street_address','district','state','postal_code','mobile','email','landline'),
 						'conditions'=>array('customer_id IS'=>$customer_firm_data['customer_primary_id'])))->first();
@@ -2380,7 +2452,7 @@ class ApplicationformspdfsController extends AppController{
 			array_push($sub_commodity_array,"245");
 
 			//save logs for BEVO to MSEO renewal logs
-			$this->loadModel('DmiRenBevoToMseoLogs');
+
 			$DmiRenBevoToMseoLogsEntity = $this->DmiRenBevoToMseoLogs->newEntity(
 				['customer_id'=>$customer_id,
 				'by_user'=>$this->Session->read('username'),
@@ -2424,10 +2496,9 @@ class ApplicationformspdfsController extends AppController{
 		//check if process is Change/Modification then get details from change table.
 		//because main tables will be updated with new details at last once certificate esigned.
 		//added on 13-04-2023 for change management
-		$this->loadModel('DmiChangeSelectedFields');
 
         //below rejected appl cond. code added on 05-02-2024 by Amol, to resolve appl. after rejection issue
-        $this->loadModel('DmiRejectedApplLogs');
+
         $rejectedDate = $this->DmiRejectedApplLogs->find('all',array('conditions'=>array('customer_id IS'=>$customer_id,'appl_type IS'=>3),'order'=>'id DESC'))->first();
         if(!empty($rejectedDate)){
             $rejcondition = array('date(created) >'=>$rejectedDate['created']);
@@ -2437,7 +2508,7 @@ class ApplicationformspdfsController extends AppController{
         //the $rejcondition is added on 05-02-2024 by Amol, in below query and function inputs
 		$getNoOfAppl = $this->DmiChangeSelectedFields->find('all',array('fields'=>array('id','changefields'),'conditions'=>array('customer_id IS'=>$customer_id,$rejcondition),'order'=>'id desc'))->toArray();
 		if ($this->Session->read('application_type')==3 || !empty($getNoOfAppl)) {
-			$this->loadComponent('Randomfunctions');
+
 			$this->Randomfunctions->setChangedDetailsForGrantPdf($customer_id,$customer_firm_data,null,null,$business_type,$rejcondition);
 
 			$this->Randomfunctions->showChangedFieldsInGrantPdfSection($customer_id,$getNoOfAppl);
@@ -2476,7 +2547,7 @@ class ApplicationformspdfsController extends AppController{
 
 		//get all records from grant table to manage multiple renewals
 		//added on 03-10-2020 by Amol
-		$this->loadModel('DmiGrantCertificatesPdfs');
+
 		$get_grant_details = $this->DmiGrantCertificatesPdfs->find('all',array('conditions'=>array('customer_id IS'=>$customer_id),'order'=>'pdf_version ASC'))->toArray();
 
 		$user_full_name = array();
@@ -2528,8 +2599,6 @@ class ApplicationformspdfsController extends AppController{
 
 			//if application type is 13 that is for lab export renewal flow (LXR) get the certificate valid upto date from the other table : Akash Thakre [21-09-2023] : [LIVE : 01-12-2023]
 			if ($this->Session->read('application_type') == 13) {
-
-				$this->loadModel('DmiLxrRenewalDetails');
 
 				$previous_dates = $this->DmiLxrRenewalDetails->find()->select(['nabl_accreditated_upto'])->where(['customer_id IS' => $customer_id, 'form_status' => 'approved'])->order('id ASC')->toArray();
 
@@ -2682,9 +2751,7 @@ class ApplicationformspdfsController extends AppController{
 		//$this->layout = 'admin_dashboard';
 		$this->viewBuilder()->setLayout('admin_dashboard');
 		$user_email_id = $this->Session->read('username');
-		$this->loadModel('DmiGrantCertificatesPdfs');
-		$this->loadModel('DmiRoOffices');
-		$this->loadModel('DmiFirms');
+
 		//changed query logic, now taking all grant certiicates except uploaded old certificates //on 06-03-2018 by Amol
 		$fetch_all_granted_pdf = $this->DmiGrantCertificatesPdfs->find('all',array('fields'=>'customer_id','group'=>'customer_id','conditions'=>array('user_email_id !='=>'old_application')))->toArray();
 
@@ -2704,7 +2771,6 @@ class ApplicationformspdfsController extends AppController{
 			$district_code = $split_customer_id[2]; //added on 06-03-2018 by Amol to get application district code.
 
 			//updated and added code to get Office table details from appl mapping Model
-			$this->loadModel('DmiApplWithRoMappings');
 			$get_ro_details = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 			$ro_email_id = $get_ro_details['ro_email_id'];
 
@@ -2937,13 +3003,6 @@ class ApplicationformspdfsController extends AppController{
 	//application pdf for approval to use 15 digit code
 	public function applPdf15DigitCode() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiStates');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
-
-
 		//added on 27-03-2018, to set default value
 		$show_esigned_by = $this->Session->read('with_esign');
 		$this->set('show_esigned_by',$show_esigned_by);
@@ -2952,7 +3011,6 @@ class ApplicationformspdfsController extends AppController{
 		$this->set('customer_id',$customer_id);
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -2999,9 +3057,6 @@ class ApplicationformspdfsController extends AppController{
 	//Report pdf for approval to use 15 digit code
 	public function reportPdf15DigitCode() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('Dmi15DigitSiteinspectionReports');
-
 		//Apply check " customer_id available status " (Done By pravin 27/10/2017)
 		$customer_id = $this->Session->read('customer_id');
 		$this->set('customer_id',$customer_id);
@@ -3031,11 +3086,6 @@ class ApplicationformspdfsController extends AppController{
 	//grant certificate for 15 digit code application
 	public function grant15DigitCertificate() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiUsers');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
-
 		$customer_id = $this->Session->read('customer_id');
 		$this->set('customer_id',$customer_id);
 
@@ -3046,7 +3096,6 @@ class ApplicationformspdfsController extends AppController{
 		$grantDateCondition = $this->Customfunctions->returnGrantDateCondition($customer_id);
 
 		//get application submission date
-		$this->loadModel('Dmi15DigitFinalSubmits');
 		$get_appl_date = $this->Dmi15DigitFinalSubmits->find('all',array('fields'=>'created','conditions'=>array('status'=>'pending',$grantDateCondition)))->first();
 		$appl_date = $get_appl_date['created'];
 		$this->set('appl_date',$appl_date);
@@ -3081,13 +3130,13 @@ class ApplicationformspdfsController extends AppController{
 		$this->set('commodity_names',$commodity_names);
 
 		//This below line is added for the QR Code genration on Shankhpal [16-08-2022]
-		$this->loadModel('DmiChemistRegistrations');
+
 		$chemistDetails = $this->DmiChemistRegistrations->find('all',array('conditions'=>array('created_by IS'=>$customer_id,'delete_status IS NULL')))->first();
 		$chemist_fname = $chemistDetails['chemist_fname'];
 		$ca_name = $firm_details['firm_name']; // get firm name
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
+
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$region = $get_office['ro_office'];
 
@@ -3107,11 +3156,7 @@ class ApplicationformspdfsController extends AppController{
 	//application pdf for approval to use E-code
 	public function applPdfECode() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiStates');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
+
 
 
 		//added on 27-03-2018, to set default value
@@ -3122,7 +3167,7 @@ class ApplicationformspdfsController extends AppController{
 		$this->set('customer_id',$customer_id);
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
+
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -3170,14 +3215,6 @@ class ApplicationformspdfsController extends AppController{
 	// This function added by shankhpal shende for pdf generation of ADP Module on 15-11-2022
 	public function applPdfAdp() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiStates');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('DmiLaboratoryOtherDetails');
-		$this->loadModel('DmiAdpPersonDetails');
-
 
 		//added on 27-03-2018, to set default value
 		$show_esigned_by = $this->Session->read('with_esign');
@@ -3189,7 +3226,6 @@ class ApplicationformspdfsController extends AppController{
 		$this->set('customer_id',$customer_id);
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -3247,9 +3283,6 @@ class ApplicationformspdfsController extends AppController{
 	//Report pdf for approval to use E-code
 	public function reportPdfECode() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiECodeSiteinspectionReports');
-
 		//Apply check " customer_id available status " (Done By pravin 27/10/2017)
 		$customer_id = $this->Session->read('customer_id');
 		$this->set('customer_id',$customer_id);
@@ -3279,10 +3312,6 @@ class ApplicationformspdfsController extends AppController{
 	//grant certificate for E-code application
 	public function grantECodeCertificate() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiUsers');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
 
 		$customer_id = $this->Session->read('customer_id');
 		$this->set('customer_id',$customer_id);
@@ -3294,7 +3323,6 @@ class ApplicationformspdfsController extends AppController{
 		$grantDateCondition = $this->Customfunctions->returnGrantDateCondition($customer_id);
 
 		//get application submission date
-		$this->loadModel('DmiECodeFinalSubmits');
 		$get_appl_date = $this->DmiECodeFinalSubmits->find('all',array('fields'=>'created','conditions'=>array('status'=>'pending',$grantDateCondition)))->first();
 		$appl_date = $get_appl_date['created'];
 		$this->set('appl_date',$appl_date);
@@ -3330,7 +3358,7 @@ class ApplicationformspdfsController extends AppController{
 
 		//get applicant wise E-Code from table, and if not present then generate new and enter record
 		//added on 24-11-2021 by Amol
-		$this->loadModel('DmiECodeForApplicants');
+
 		$getGrantedEcode = $this->DmiECodeForApplicants->find('all',array('fields'=>'e_code','conditions'=>array('customer_id'=>$customer_id),'order'=>'id desc'))->first();
 		if (!empty($getGrantedEcode)) {
 			$granted_e_code = $getGrantedEcode['e_code'];
@@ -3366,13 +3394,13 @@ class ApplicationformspdfsController extends AppController{
 		$this->set('eCode',$eCode);
 
 		//This below line is added for the QR Code genration on Shankhpal [16-08-2022]
-		$this->loadModel('DmiChemistRegistrations');
+
 		$chemistDetails = $this->DmiChemistRegistrations->find('all',array('conditions'=>array('created_by IS'=>$customer_id,'delete_status IS NULL')))->first();
 		$chemist_fname = $chemistDetails['chemist_fname'];
 		$ca_name = $firm_details['firm_name']; // get firm name
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
+
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$region = $get_office['ro_office'];
 
@@ -3390,16 +3418,6 @@ class ApplicationformspdfsController extends AppController{
 
 	//grant certificate for Adp application added by shankhpal shende on 17/11/2022
 	public function grantAdpCertificate() {
-
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiUsers');
-		$this->loadModel('DmiStates');
-		$this->loadModel('DmiLaboratoryOtherDetails');
-		$this->loadModel('DmiAdpPersonDetails');
-		$this->loadModel('DmiApplWithRoMappings');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('DmiAdpFinalSubmits');
-		$this->loadModel('DmiRoOffices');
 
 		$customer_id = $this->Session->read('customer_id');
 		$this->set('customer_id',$customer_id);
@@ -3429,9 +3447,6 @@ class ApplicationformspdfsController extends AppController{
 
 		$this->set('customer_firm_data',$customer_firm_data);
 		$commodity_id = $customer_firm_data['commodity'];
-
-		$this->loadModel('DmiGrantCertificatesPdfs');
-
 		$grant_certificate_pdf = null;
 		$valid_upto_date = null;
 		$fetch_max_pdf_id = $this->DmiGrantCertificatesPdfs->find('all', array('fields' => 'id', 'conditions' => array('customer_id IS' => $customer_id), 'order' => array('id desc')))->first();
@@ -3505,23 +3520,16 @@ class ApplicationformspdfsController extends AppController{
 	//on 13-04-2023 by Amol
 	public function changeApplPdf() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiStates');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
-
 		//added on 27-03-2018, to set default value
 		$show_esigned_by = $this->Session->read('with_esign');
 		$this->set('show_esigned_by',$show_esigned_by);
 		$customer_id = $this->Session->read('username');
 		$this->set('customer_id',$customer_id);
 
-		$this->loadComponent('Randomfunctions');
+
 		$this->Randomfunctions->showChangedFieldsInApplPdf($customer_id);
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -3573,19 +3581,10 @@ class ApplicationformspdfsController extends AppController{
 
 	public function applPdfSurrenderCa() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiCustomers');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiStates');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('DmiSurrenderFormsDetails');
-
 		$customer_id = $this->Session->read('username');
 		$this->set('customer_id',$customer_id);
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -3640,19 +3639,10 @@ class ApplicationformspdfsController extends AppController{
 
 	public function applPdfSurrenderPp() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiCustomers');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiStates');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('DmiSurrenderFormsDetails');
-
 		$customer_id = $this->Session->read('username');
 		$this->set('customer_id',$customer_id);
 
 		//get nodal office of the applied PP
-		$this->loadModel('DmiApplWithRoMappings');
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -3692,19 +3682,10 @@ class ApplicationformspdfsController extends AppController{
 
 	public function applPdfSurrenderLab() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiCustomers');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiStates');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('DmiSurrenderFormsDetails');
-
 		$customer_id = $this->Session->read('username');
 		$this->set('customer_id',$customer_id);
 
 		//get nodal office of the applied PP
-		$this->loadModel('DmiApplWithRoMappings');
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -3767,18 +3748,6 @@ class ApplicationformspdfsController extends AppController{
 
 
 	public function caRiReportPdf() {
-
-
-		$this->loadModel('DmiRtiCaPackerDetails');	 // changese modelname 13-05-2023
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiGrantCertificatesPdfs');
-		$this->loadModel('MCommodity');
-		$this->loadModel('DmiCaPpLabMapings');
-		$this->loadModel('DmiChemistRegistrations');
-		$this->loadModel('DmiCheckSamples');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiStates');
-
 
 		$customer_id = $this->Session->read('customer_id');
 		$this->set('customer_id',$customer_id);
@@ -3898,13 +3867,6 @@ class ApplicationformspdfsController extends AppController{
 
 	public function ppRiReportPdf() {
 
-
-		$this->loadModel('DmiRoutineInspectionPpReports');
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiGrantCertificatesPdfs');
-		$this->loadModel('DmiAllTblsDetails');
-		$this->loadModel('MCommodity');
-
 		$customer_id = $this->Session->read('customer_id');
 		$this->set('customer_id',$customer_id);
 
@@ -3931,7 +3893,7 @@ class ApplicationformspdfsController extends AppController{
 		$q = $conn->execute($users);
 
 		$all_packers_records = $q->fetchAll('assoc');
-		$this->loadModel('MCommodity');
+
 		$MCommodity = TableRegistry::getTableLocator()->get('MCommodity');
 
 		$i=0;
@@ -3965,8 +3927,7 @@ class ApplicationformspdfsController extends AppController{
 				$i=$i+1;
 		}
 
-		$this->loadModel('DmiRtiPackerDetails');
-		$this->loadModel('DmiFirms'); // added by shankhpal on 23/05/2023 for to office address
+
 		$added_packers_details = $this->DmiRtiPackerDetails->find('all', array('conditions'=>array('customer_id IS'=>$customer_id,'delete_status IS NULL'),'order'=>'id'))->toArray();
 
 		$firm_data = $this->DmiFirms->find('all',array('keyField'=>'commodity_code','valueField'=>'commodity_name', 'conditions'=>array('customer_id IN'=> $customer_id)))->first(); // updated query toArray to first on 19/05/2023
@@ -3974,12 +3935,12 @@ class ApplicationformspdfsController extends AppController{
 		$registered_office_address = $firm_data['street_address']; // added for Registered office address by shankhpal 19/05/2023
 
 		// load model DmiPrintingPremisesProfiles on 19/05/2023
-		$this->loadModel('DmiPrintingPremisesProfiles');
+
 		$premises_data = $this->DmiPrintingPremisesProfiles->find('all', array('valueField'=>'street_address', 'conditions'=>array('customer_id IS'=>$customer_id)))->first();
 
 		$printing_premises_address = $premises_data['street_address'];   //to get printing_premises_address
 
-		$this->loadModel('DmiPackingTypes');
+
 		$added_firms = $this->DmiFirms->find('all',array('conditions'=>array('customer_id IS'=>$customer_id)))->toArray();
 
 		$added_firm_field = $added_firms[0];
@@ -4008,12 +3969,6 @@ class ApplicationformspdfsController extends AppController{
 	// Note : For Routine Inspection (RTI)
 
 	public function labRiReportPdf() {
-
-		#Load Models
-		// $this->loadModel('DmiRoutineInspectionLabReports');  // Commented by shankhapl on 26/05/2023 for replce of new model name
-		$this->loadModel('DmiRtiLaboratoryDetails'); // added new table for rti module on 26/05/2023
-		$this->loadModel('DmiFirms');
-		$this->loadModel('MCommodity');
 
 		$customer_id = $this->Session->read('customer_id');
 		$this->set('customer_id',$customer_id);
@@ -4074,17 +4029,6 @@ class ApplicationformspdfsController extends AppController{
 
 	//Chemist application form pdf afetr chemist register and esign or without esign generate created by laxmi B on 13-12-2022
 	public function chemistApplPdf() {
-
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiUsers');
-		$this->loadModel('DmiStates');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiChemistProfileDetails');
-		$this->loadModel('DmiChemistRegistrations');
-		$this->loadModel('MCommodity');
-		$this->loadModel('DmiRoOffices');
-		$this->loadModel('MCommodityCategory');
-
 
 
 		$customer_id = $this->Session->read('username');
@@ -4168,18 +4112,6 @@ class ApplicationformspdfsController extends AppController{
 	//  added by laxmi B. on 23-12-2022
 	//  added by laxmi B. on 23-12-2022
 	public function chemistAppPdfRoToRal() {
-
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiCustomers');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiStates');
-		$this->loadModel('MCommodity');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('DmiRoOffices');
-		$this->loadModel('DmiChemistPaymentDetails');
-		$this->loadModel('DmiUserRoles');
-		$this->loadModel('DmiChemistRegistrations');
-		$this->loadModel('DmiChemistRoToRalLogs');
 
 		$customer_id = $this->Session->read('customer_id');
 		$application_type = $this->Session->read('application_type');
@@ -4313,17 +4245,6 @@ class ApplicationformspdfsController extends AppController{
 	//added new function to generate training completed pdf at ro on 02-01-2023 by laxmi B.
 	public function chemistTrainingCompPdfRo($id = null) {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiStates');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiChemistRoToRalLogs');
-		$this->loadModel('DmiChemistTrainingAtRo');
-		$this->loadModel('DmiChemistRegistrations');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('MCommodity');
-		$this->loadModel('DmiRoOffices');
-		$this->loadModel('DmiChemistProfileDetails');
-
 		$ro_fname = $this->Session->read('f_name');
 		$ro_lname = $this->Session->read('l_name');
 		$ro_role = $this->Session->read('role');
@@ -4384,7 +4305,8 @@ class ApplicationformspdfsController extends AppController{
 
 			}
 
-			$this->loadModel('DmiChemistROToRalLogs');
+
+
 			$scheduleDates = $this->DmiChemistROToRalLogs->find('all')->where(array('chemist_id IS'=>$customer_id, 'reshedule_status IS'=>'confirm'))->last();
 
 			if (!empty($scheduleDates)) {
@@ -4445,19 +4367,6 @@ class ApplicationformspdfsController extends AppController{
 
 	//chemist training approval certificate added by laxmi B. on 03-01-2022
 	public function chemistTrainingApprovalCertificate() {
-
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiUsers');
-		$this->loadModel('DmiStates');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('MCommodity');
-		$this->loadModel('DmiChemistRegistrations');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiChemistRoToRalLogs');
-		$this->loadModel('DmiChemistRalToRoLogs');
-		$this->loadModel('DmiRoOffices');
-		$this->loadModel('DmiChemistProfileDetails');
-
 
 		$customer_id = $this->Session->read('customer_id');
 		$ro_fname    = $this->Session->read('f_name');
@@ -4591,17 +4500,6 @@ class ApplicationformspdfsController extends AppController{
 	//chemist training schedule letter at RO side added by laxmi on 10-1-2023
 	public function trainingScheduleLetterFromRo() {
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiUsers');
-		$this->loadModel('DmiStates');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('MCommodity');
-		$this->loadModel('DmiChemistRegistrations');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiChemistRoToRalLogs');
-		$this->loadModel('DmiChemistRalToRoLogs');
-		$this->loadModel('DmiRoOffices');
-		$this->loadModel('DmiChemistProfileDetails');
 
 		$customer_id = $this->Session->read('customer_id');
 		$ro_fname    = $this->Session->read('f_name');
@@ -4732,14 +4630,6 @@ class ApplicationformspdfsController extends AppController{
 
 	public function labExportRenewalFormPdf() {
 
-		$this->loadModel('DmiGrantCertificatesPdfs');
-		$this->loadModel('DmiApplicationCharges');
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiLaboratoryRenewalOtherDetails');
-		$this->loadModel('DmiLxrRenewalDetails');
-		$this->loadModel('MCommodity');
-		$this->loadModel('DmiLaboratoryChemistsDetails');
-		$this->loadModel('DmiLxrPaymentDetails');
 
 		//added on 28-03-2018, to set default value
 		$show_esigned_by = $this->Session->read('with_esign');
@@ -4749,7 +4639,7 @@ class ApplicationformspdfsController extends AppController{
 		$this->set('customer_id',$customer_id);
 
 		//get nodal office of the applied CA
-		$this->loadModel('DmiApplWithRoMappings');
+
 		$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 		$this->set('get_office',$get_office);
 
@@ -4836,16 +4726,13 @@ class ApplicationformspdfsController extends AppController{
              */
             public function appealFormPdf(){
 
-                $this->loadModel('DmiFirms');
-                $this->loadModel('DmiCustomers');
-                $this->loadModel('DmiDistricts');
-                $this->loadModel('DmiStates');
-				$this->loadModel('DmiApplicationTypes');
+
+
                 $customer_id = $this->Session->read('username');
                 $this->set('customer_id',$customer_id);
 
                 //get nodal office of the applied CA
-                $this->loadModel('DmiApplWithRoMappings');
+
                 $get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
                 $this->set('get_office',$get_office);
 
@@ -4886,7 +4773,7 @@ class ApplicationformspdfsController extends AppController{
 
 				//Mark final submission in appeal table.... Joshi, Akash [31-08-2023]
 				if($this->Session->read('with_esign')=='no' || $this->Session->read('with_esign')=='yes'){
-					$this->loadModel('DmiAplFormDetails');
+
                     $this->DmiAplFormDetails->markAppealSubmitted($customer_id,$associated_rejected_app_type);
 				}
 
@@ -4899,21 +4786,14 @@ class ApplicationformspdfsController extends AppController{
              */
             public function grantAppealPdf(){
 
-                $this->loadModel('DmiFirms');
-                $this->loadModel('DmiCustomers');
-                $this->loadModel('DmiDistricts');
-                $this->loadModel('DmiStates');
-				$this->loadModel('DmiRejectedApplLogs');
-				$this->loadModel('DmiAplFormDetails');
-				$this->loadModel('DmiApplicationTypes');
-				$this->loadModel('DmiAplGrantCertificatePdfs');
+
 
 				$customer_id=$this->Session->read('customer_id');
                 $username = $this->Session->read('username');
                 $this->set('customer_id',$customer_id);
 
                 //get nodal office of the applied CA
-                $this->loadModel('DmiApplWithRoMappings');
+
                 $get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
                 $this->set('get_office',$get_office);
 
@@ -4984,21 +4864,12 @@ class ApplicationformspdfsController extends AppController{
 				$this->set('customer_id',$customer_id);
 
 				//get nodal office of the applied CA
-				$this->loadModel('DmiApplWithRoMappings');
-				$this->loadModel('DmiStates');
-				$this->loadModel('DmiFirms');
-				$this->loadModel('DmiDistricts');
-				$this->loadModel('DmiGrantCertificatesPdfs');
-				$this->loadModel('MCommodity');
-				$this->loadModel('MCommodityCategory');
-				$this->loadModel('MGradeDesc');
-				$this->loadModel('CommGrade');
-				$this->loadModel('DmiBgrCommodityReportsAddmore');
+
 
 				$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 				$this->set('get_office',$get_office);
 
-				$this->loadModel('DmiFirms');
+
 				$fetch_customer_firm_data = $this->DmiFirms->find('all',array(
 					'conditions'=>array(
 					'customer_id 	IS'=>$customer_id)))->first();
@@ -5072,12 +4943,12 @@ class ApplicationformspdfsController extends AppController{
 
 
 				// to get RO/SO office
-				$this->loadModel('DmiApplWithRoMappings');
+
 				$get_office = $this->DmiApplWithRoMappings->getOfficeDetails($customer_id);
 				$region = $get_office['ro_office'];
 				$this->set('region',$region);
 
-				$this->loadModel('DmiStates');
+
 
 				$firm_details = $this->DmiFirms->firmDetails($customer_id);
 
@@ -5120,15 +4991,11 @@ class ApplicationformspdfsController extends AppController{
 				$this->set('bgrAddedTableRecords',$bgrAddedTableRecords);
 
 
-				$this->loadComponent('Randomfunctions');
+
 				//added custom method to check if the lab application is NABL accreditated
 				$NablDate = $this->Randomfunctions->checkIfLabNablAccreditated($customer_id);
 				// $NablDate = 'yes';
 				$this->set('NablDate',$NablDate);
-
-
-				$this->loadModel('DmiBgrCommodityReportsAddmore');
-				$this->loadModel('DmiBgrCommodityReports');
 
 				$latest_id = $this->DmiBgrCommodityReports->find('list', array('valueField'=>'id', 'conditions'=>array('customer_id IS'=>$customer_id)))->toArray();
 				if($latest_id != null){
@@ -5170,7 +5037,7 @@ class ApplicationformspdfsController extends AppController{
 					$startDate = date('Y/m/d', strtotime($startDate));
 					$endDate = date('Y/m/d', strtotime($endDate));
 
-					$this->loadModel('DmiBgrCommodityReports');
+
 					if(isset($_SESSION['packer_id'])){
 					$customer_id = $_SESSION['packer_id'];
 					}elseif(isset($_SESSION['customer_id'])){

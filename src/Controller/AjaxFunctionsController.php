@@ -14,16 +14,101 @@ use Cake\Http\Response; //added by shankhpal on 04/07/2023
 class AjaxFunctionsController extends AppController{
 
 
+    private $DmiBgrCommodityReports;
+    private $DmiReplicaUnitDetails;
+    private $DmiBgrCommodityReportsAddmore;
+    private $DmiAllTblsDetails;
+    private $DmiRtiPackerDetails;
+    private $DmiCheckSamples;
+    private $DmiCaPpLabMapings;
+    private $DmiCaPpLabActionLogs;
+    private $DmiCaMappingOwnLabDetails;
+    private $DmiReplicaChargesDetails;
+    private $DmiCustomers;
+    private $DmiChemistRegistrations;
+    private $DmiStates;
+    private $DmiRoOffices;
+    private $DmiRejectedApplLogs;
+    private $DmiUserRoles;
+    private $DmiApplWithRoMappings;
+    private $DmiUsers;
+    private $DmiCommodityPacktypeUpdateLogs;
+    private $DmiGrantCertificatesPdfs;
+    private $DmiFlowWiseTablesLists;
+    private $DmiFirms;
+    private $DmiOldCertDateUpdateLogs;
+    private $DmiOldApplicationRenewalDates;
+    private $DmiOldApplicationCertificateDetails;
+    private $DmiRenewalPackerDetails;
+    private $DmiAllConstituentOilsDetails;
+    private $DmiAllTanksDetails;
+    private $DmiApplicationCharges;
+    private $DmiDistricts;
+    private $MCommodity;
 
 	public function initialize(): void {
 		parent::initialize();
 
-		$this->loadComponent('Customfunctions');
-		$this->loadComponent('Mastertablecontent');
-		$this->loadComponent('Communication');
+        // added by shankhpal on 27-03-2024
+        $components = [
+            'Customfunctions',
+            'Mastertablecontent',
+            'Communication',
+            'AqcmsWrapper',
+        ];
+
+        foreach($components as $component){
+            $this->loadComponent($component);
+        }
+
+
+        // Call the loadAllModels method to load necessary models.
+        $this->loadAllModels();
 	}
 
 
+
+    /**
+     * Loads all necessary models for the current controller.
+     * This method is responsible for loading models required for the controller's functionality.
+     * Author: Shankhpal Shende
+     * Date: 04-04-2024
+     */
+    private function loadAllModels(): void {
+
+		$this->DmiBgrCommodityReports = $this->AqcmsWrapper->customeLoadModel('DmiBgrCommodityReports');
+		$this->DmiReplicaUnitDetails = $this->AqcmsWrapper->customeLoadModel('DmiReplicaUnitDetails');
+        $this->DmiBgrCommodityReportsAddmore = $this->AqcmsWrapper->customeLoadModel('DmiBgrCommodityReportsAddmore');
+		$this->DmiAllTblsDetails = $this->AqcmsWrapper->customeLoadModel('DmiAllTblsDetails');
+        $this->DmiRtiPackerDetails = $this->AqcmsWrapper->customeLoadModel('DmiRtiPackerDetails');
+        $this->DmiCheckSamples = $this->AqcmsWrapper->customeLoadModel('DmiCheckSamples');
+        $this->DmiCaPpLabMapings = $this->AqcmsWrapper->customeLoadModel('DmiCaPpLabMapings');
+		$this->DmiCaPpLabActionLogs = $this->AqcmsWrapper->customeLoadModel('DmiCaPpLabActionLogs');
+		$this->DmiCaMappingOwnLabDetails = $this->AqcmsWrapper->customeLoadModel('DmiCaMappingOwnLabDetails');
+		$this->DmiReplicaChargesDetails = $this->AqcmsWrapper->customeLoadModel('DmiReplicaChargesDetails');
+        $this->DmiCustomers = $this->AqcmsWrapper->customeLoadModel('DmiCustomers');
+        $this->DmiChemistRegistrations = $this->AqcmsWrapper->customeLoadModel('DmiChemistRegistrations');
+		$this->DmiStates = $this->AqcmsWrapper->customeLoadModel('DmiStates');
+		$this->DmiRoOffices = $this->AqcmsWrapper->customeLoadModel('DmiRoOffices');
+        $this->DmiRejectedApplLogs = $this->AqcmsWrapper->customeLoadModel('DmiRejectedApplLogs');
+        $this->DmiUserRoles = $this->AqcmsWrapper->customeLoadModel('DmiUserRoles');
+        $this->DmiApplWithRoMappings = $this->AqcmsWrapper->customeLoadModel('DmiApplWithRoMappings');
+		$this->DmiUsers = $this->AqcmsWrapper->customeLoadModel('DmiUsers');
+		$this->DmiCommodityPacktypeUpdateLogs = $this->AqcmsWrapper->customeLoadModel('DmiCommodityPacktypeUpdateLogs');
+        $this->DmiGrantCertificatesPdfs = $this->AqcmsWrapper->customeLoadModel('DmiGrantCertificatesPdfs');
+		$this->DmiFlowWiseTablesLists = $this->AqcmsWrapper->customeLoadModel('DmiFlowWiseTablesLists');
+		$this->DmiFirms = $this->AqcmsWrapper->customeLoadModel('DmiFirms');
+        $this->DmiOldCertDateUpdateLogs = $this->AqcmsWrapper->customeLoadModel('DmiOldCertDateUpdateLogs');
+        $this->DmiOldApplicationRenewalDates = $this->AqcmsWrapper->customeLoadModel('DmiOldApplicationRenewalDates');
+        $this->DmiOldApplicationCertificateDetails = $this->AqcmsWrapper->customeLoadModel('DmiOldApplicationCertificateDetails');
+        $this->DmiRenewalPackerDetails = $this->AqcmsWrapper->customeLoadModel('DmiRenewalPackerDetails');
+        $this->DmiAllConstituentOilsDetails = $this->AqcmsWrapper->customeLoadModel('DmiAllConstituentOilsDetails');
+        $this->DmiAllTanksDetails = $this->AqcmsWrapper->customeLoadModel('DmiAllTanksDetails');
+        $this->DmiApplicationCharges = $this->AqcmsWrapper->customeLoadModel('DmiApplicationCharges');
+        $this->DmiDistricts = $this->AqcmsWrapper->customeLoadModel('DmiDistricts');
+        $this->MCommodity = $this->AqcmsWrapper->customeLoadModel('MCommodity');
+
+    }
 
 	// SHOW COMMODITY DROPDOWN
 	// DESCRIPTION : --
@@ -33,7 +118,6 @@ class AjaxFunctionsController extends AppController{
 	public function showCommodityDropdown() {
 
 		$this->autoRender = false;
-		$this->loadModel('MCommodity');
 		$category_id = $_POST['commodity'];
 		// changes by shankhpal shende for display commodities in asc order on 02/09/2022
 		$commodities = $this->MCommodity->find('all', array('fields'=>array('commodity_code','commodity_name'), 'conditions'=>array('category_code IS'=>$category_id,'display'=>'Y'),'order'=>array('commodity_name asc')))->toArray();
@@ -55,7 +139,7 @@ class AjaxFunctionsController extends AppController{
 	public function showDistrictDropdown() {
 
 		$this->autoRender = false;
-		$this->loadModel('DmiDistricts');
+
 		$state_id = $_POST['state'];
 		// Apply "Order by" clause to get state list by order wise (Done By Pravin 10-01-2018)
 		$districts = $this->DmiDistricts->find('all', array('fields'=>array('id','district_name'), 'conditions'=>array('state_id IS'=>$state_id, 'delete_status IS NULL'),'order'=>array('district_name')))->toArray();
@@ -76,7 +160,7 @@ class AjaxFunctionsController extends AppController{
 	public function showCharge() {
 
 		$this->autoRender = false;
-		$this->loadModel('DmiApplicationCharges');
+
 		$get_charges = $this->DmiApplicationCharges->find('all',array('conditions'=>array('certificate_type_id IS'=>$this->request->getData('certification_type'))))->first();
 		$total_charges = $get_charges['charge'];
 
@@ -94,8 +178,7 @@ class AjaxFunctionsController extends AppController{
 	public function calculateCategoryWiseCharge() {
 
 			$this->autoRender = false;
-			$this->loadModel('MCommodity');
-			$this->loadModel('DmiApplicationCharges');
+
 			$selected_commodity_ids = explode(',',(string) $this->request->getData('selected_sub_commodities')); #For Deprecations
 
 			$get_category_ids = $this->MCommodity->find('list',array('valueField'=>'category_code','conditions'=>array('commodity_code IN'=>$selected_commodity_ids)))->toList();
@@ -265,7 +348,7 @@ class AjaxFunctionsController extends AppController{
 
 		$this->autoRender = false;
 		$customer_id = $this->Customfunctions->sessionCustomerID();
-		$this->loadModel('DmiAllTanksDetails');
+
 
 		$tank_no = htmlentities($_POST['tank_no'], ENT_QUOTES);
 		$tank_shape = htmlentities($_POST['tank_shape'], ENT_QUOTES);
@@ -296,7 +379,6 @@ class AjaxFunctionsController extends AppController{
 
 		$this->autoRender = false;
 		$customer_id = $this->Customfunctions->sessionCustomerID();
-		$this->loadModel('DmiAllTanksDetails');
 
 		if ($this->Session->read('edit_tank_id')==null) {
 
@@ -364,7 +446,6 @@ class AjaxFunctionsController extends AppController{
 	public function deleteTankId() {
 
 		$this->Session->delete('edit_tank_id');
-		$this->loadModel('DmiAllTanksDetails');
 
 		$record_id = $_POST['delete_tank_id'];
 		$tank_delete_result = $this->DmiAllTanksDetails->deleteCustomerTankDetails($record_id);// call to custome function from model
@@ -396,7 +477,6 @@ class AjaxFunctionsController extends AppController{
 		$quantity_procured = htmlentities($_POST['quantity_procured'], ENT_QUOTES);
 		$cname = htmlentities($_POST['cname'], ENT_QUOTES);
 
-		$this->loadModel('DmiAllConstituentOilsDetails');
 		$save_details_result = $this->DmiAllConstituentOilsDetails->saveConstOilsDetails($oil_name,$mill_name_address,$quantity_procured);// call custome method from model
 
 		//to show added mills table
@@ -421,7 +501,6 @@ class AjaxFunctionsController extends AppController{
 
 		$this->autoRender = false;
 		$customer_id = $this->Customfunctions->sessionCustomerID();
-		$this->loadModel('DmiAllConstituentOilsDetails');
 
 		if ($this->Session->read('edit_const_oils_id')==null) {
 
@@ -487,7 +566,6 @@ class AjaxFunctionsController extends AppController{
 	public function deleteConstOilsId() {
 
 		$this->Session->delete('edit_const_oils_id');
-		$this->loadModel('DmiAllConstituentOilsDetails');
 
 		//$record_id = $id;
 		$record_id = $_POST['delete_const_oils_id'];
@@ -665,7 +743,7 @@ class AjaxFunctionsController extends AppController{
 		$tank_size = htmlentities($_POST['tank_size'], ENT_QUOTES);
 		$tank_capacity = htmlentities($_POST['tank_capacity'], ENT_QUOTES);
 
-		$this->loadModel('DmiAllTanksDetails');
+
 		$save_details_result = $this->DmiAllTanksDetails->saveUserTankDetails($customer_id,$tank_no,$tank_shape,$tank_size,$tank_capacity,$oil_type);// call custome method from model
 
 		//to show added tank table
@@ -687,7 +765,6 @@ class AjaxFunctionsController extends AppController{
 
 	public function editStorageTankId() {
 
-		$this->loadModel('DmiAllTanksDetails');
 		$this->autoRender = false;
 		$customer_id = $this->Session->read('customer_id');
 		$oil_type = null;	$user_email_id = $this->Session->read('username');
@@ -754,7 +831,6 @@ class AjaxFunctionsController extends AppController{
 
 	public function deleteStorageTankId() {
 
-		$this->loadModel('DmiAllTanksDetails');
 		$this->Session->delete('edit_storage_tank_id');
 		$oil_type = null;	$user_email_id = $this->Session->read('username');
 
@@ -778,7 +854,6 @@ class AjaxFunctionsController extends AppController{
 
 	public function addConstOilsTankDetails() {
 
-		$this->loadModel('DmiAllTanksDetails');
 		$this->autoRender = false;
 		$customer_id = $this->Session->read('customer_id');
 		$oil_type = 'constituent';	$user_email_id = $this->Session->read('username');
@@ -806,7 +881,6 @@ class AjaxFunctionsController extends AppController{
 
 	public function editConstOilsTankId() {
 
-		$this->loadModel('DmiAllTanksDetails');
 		$this->autoRender = false;
 		$customer_id = $this->Session->read('customer_id');
 		$oil_type = 'constituent';	$user_email_id = $this->Session->read('username');
@@ -870,7 +944,6 @@ class AjaxFunctionsController extends AppController{
 
 	public function deleteConstOilsTankId() {
 
-		$this->loadModel('DmiAllTanksDetails');
 		$this->Session->delete('edit_const_oils_tank_id');
 		$oil_type = 'constituent';	$user_email_id = $this->Session->read('username');
 
@@ -893,7 +966,6 @@ class AjaxFunctionsController extends AppController{
 
 	public function addBevoOilsTankDetails() {
 
-		$this->loadModel('DmiAllTanksDetails');
 		$this->autoRender = false;
 		$customer_id = $this->Session->read('customer_id');
 		$oil_type = 'bevo';	$user_email_id = $this->Session->read('username');
@@ -921,7 +993,6 @@ class AjaxFunctionsController extends AppController{
 
 	public function editBevoOilsTankId() {
 
-		$this->loadModel('DmiAllTanksDetails');
 		$this->autoRender = false;
 		$customer_id = $this->Session->read('customer_id');
 		$oil_type = 'bevo';	$user_email_id = $this->Session->read('username');
@@ -987,7 +1058,6 @@ class AjaxFunctionsController extends AppController{
 
 	public function deleteBevoOilsTankId() {
 
-		$this->loadModel('DmiAllTanksDetails');
 		$this->Session->delete('edit_bevo_oils_tank_id');
 		$oil_type = 'bevo';	$user_email_id = $this->Session->read('username');
 
@@ -1012,7 +1082,6 @@ class AjaxFunctionsController extends AppController{
 
 	public function addConstOilMillDetails() {
 
-		$this->loadModel('DmiAllConstituentOilsDetails');
 		$this->autoRender = false;
 		$customer_id = $this->Session->read('customer_id');
 
@@ -1037,7 +1106,6 @@ class AjaxFunctionsController extends AppController{
 
 	public function editConstOilMillId() {
 
-		$this->loadModel('DmiAllConstituentOilsDetails');
 		$this->autoRender = false;
 		$customer_id = $this->Session->read('customer_id');
 
@@ -1094,7 +1162,6 @@ class AjaxFunctionsController extends AppController{
 
 	public function deleteConstOilMillId() {
 
-		$this->loadModel('DmiAllConstituentOilsDetails');
 		$this->Session->delete('edit_const_oil_mill_id');
 
 		//$record_id = $id;
@@ -1120,8 +1187,6 @@ class AjaxFunctionsController extends AppController{
 
 		$this->autoRender = false;
 		$customer_id = $this->Session->read('username');
-
-		$this->loadModel('DmiRenewalPackerDetails');
 
 		$packer_name = htmlentities($_POST['packer_name'], ENT_QUOTES);
 		$packer_type = htmlentities($_POST['packer_type'], ENT_QUOTES);
@@ -1149,8 +1214,6 @@ class AjaxFunctionsController extends AppController{
 
 		$this->autoRender = false;
 		$customer_id = $this->Session->read('username');
-
-		$this->loadModel('DmiRenewalPackerDetails');
 
 		if ($this->Session->read('edit_packer_id')==null) {
 
@@ -1210,7 +1273,6 @@ class AjaxFunctionsController extends AppController{
 
 	public function deletePackerId() {
 
-		$this->loadModel('DmiRenewalPackerDetails');
 		$customer_id = $this->Session->read('username');
 
 		$this->Session->delete('edit_packer_id');
@@ -1249,7 +1311,7 @@ class AjaxFunctionsController extends AppController{
 		$this->autoRender = false;
 		$id = $_POST['referred_back_max_id'];
 		$model_name = $_POST['model_name'];
-		$this->loadModel($model_name);
+        $model_name = $this->AqcmsWrapper->customeLoadModel($model_name);
 		$entity = $this->$model_name->get($id);
 		$this->$model_name->delete($entity);
 	}
@@ -1275,7 +1337,7 @@ class AjaxFunctionsController extends AppController{
 		$this->autoRender = false;
 		$id = $_POST['mo_comment_max_id'];
 		$model_name = $_POST['model_name'];
-		$this->loadModel($model_name);
+        $model_name = $this->AqcmsWrapper->customeLoadModel($model_name);
 		$entity = $this->$model_name->get($id);
 		$this->$model_name->delete($entity);
 	}
@@ -1297,7 +1359,7 @@ class AjaxFunctionsController extends AppController{
 		$this->autoRender = false;
 		$id = $_POST['ro_reply_max_id'];
 		$model_name = $_POST['model_name'];
-		$this->loadModel($model_name);
+        $model_name = $this->AqcmsWrapper->customeLoadModel($model_name);
 
 		//to check if ro commented first & created new row then delete entire row
 		$check_row_comment_by = $this->$model_name->find('all',array('conditions'=>array('id IS'=>$id)))->first();
@@ -1339,7 +1401,7 @@ class AjaxFunctionsController extends AppController{
 		$id = $_POST['referred_back_max_id'];
 		$model_name = $_POST['model_name'];
 
-		$this->loadModel($model_name);
+        $model_name = $this->AqcmsWrapper->customeLoadModel($model_name);
 		$entity = $this->$model_name->get($id);
 		$this->$model_name->delete($entity);
 	}
@@ -1361,7 +1423,7 @@ class AjaxFunctionsController extends AppController{
 		$this->autoRender = false;
 		$id = $_POST['reply_max_id'];
 		$model_name = $_POST['model_name'];
-		$this->loadModel($model_name);
+        $model_name = $this->AqcmsWrapper->customeLoadModel($model_name);
 
 		$entity = $this->$model_name->newEntity(array(
 			'id'=>$id,
@@ -1390,8 +1452,6 @@ class AjaxFunctionsController extends AppController{
 		$reason_to_update = $_POST['reason_to_update'];
 		$valid_upto_date = $_POST['valid_upto_date'];
 
-		$this->loadModel('DmiOldApplicationCertificateDetails');
-
 		//get old application certificate details
 		$get_old_certificate_details = $this->DmiOldApplicationCertificateDetails->find('all',array('conditions'=>array('customer_id IS'=>$customer_id)))->first();
 		$previous_grant_date = $get_old_certificate_details['date_of_grant'];
@@ -1405,7 +1465,6 @@ class AjaxFunctionsController extends AppController{
 			//$get_old_renewal_details = $this->DmiOldApplicationCertificateDetails->find('all',array('conditions'=>array('customer_id IS'=>$customer_id),'order'=>'id DESC'))->first();
 
 			//added below query on 09-06-2023 by Amol, as required to get last renewal date
-			$this->loadModel('DmiOldApplicationRenewalDates');
 			$get_old_renewal_details = $this->DmiOldApplicationRenewalDates->find('all',array('conditions'=>array('customer_id' => $customer_id),'order'=>'id DESC'))->first();
 
 			$previous_last_ren_date = $get_old_renewal_details['renewal_date'];
@@ -1428,7 +1487,6 @@ class AjaxFunctionsController extends AppController{
 		$valid_upto_date = $this->Customfunctions->dateFormatCheck($valid_upto_date);
 
 		//maintain date updation logs
-		$this->loadModel('DmiOldCertDateUpdateLogs');
 		$DmiOldCertDateUpdateLogsEntity = $this->DmiOldCertDateUpdateLogs->newEntity(array(
 
 			'customer_id'=>$customer_id,
@@ -1458,9 +1516,6 @@ class AjaxFunctionsController extends AppController{
 	public function checkUniqueTransIdForAppl() {
 
 		//initialize model in component
-		$this->loadModel('DmiGrantCertificatesPdfs');
-		$this->loadModel('DmiFlowWiseTablesLists');
-		$this->loadModel('DmiFirms');
 		$trans_id = $_POST['trans_id'];
 
 		$new_customer_id = $this->Session->read('username');//currently applying applicant
@@ -1475,7 +1530,8 @@ class AjaxFunctionsController extends AppController{
 		foreach ($payment_tables_array as $each_table) {
 
 			$each_table = $each_table['payment'];
-			$this->loadModel($each_table);
+
+            $each_table = $this->AqcmsWrapper->customeLoadModel($each_table);
 
 			//check new app if trans id already exist
 			$check_trans_id = $this->$each_table->find('all',array('conditions'=>array('transaction_id IS'=>$trans_id),'order'=>'id desc'))->first();
@@ -1553,9 +1609,6 @@ class AjaxFunctionsController extends AppController{
 			$selected_commodity = ltrim($selected_commodity, ',');
 		}
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiCommodityPacktypeUpdateLogs');
-
 		//get firm details
 		$firm_details = $this->DmiFirms->firmDetails($customer_id);
 
@@ -1609,9 +1662,6 @@ class AjaxFunctionsController extends AppController{
 			$selected_packing_types = ltrim($selected_packing_types, ',');
 		}
 
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiCommodityPacktypeUpdateLogs');
-
 		//get firm details
 		$firm_details = $this->DmiFirms->firmDetails($customer_id);
 
@@ -1652,8 +1702,6 @@ class AjaxFunctionsController extends AppController{
 		$customer_id = $this->Session->read('customer_id');
 		$application_type = $this->Session->read('application_type');
 
-		$this->loadModel('DmiApplWithRoMappings');
-		$this->loadModel('DmiUsers');
 
 		$dashboardCon = new DashboardController();
 
@@ -1728,13 +1776,14 @@ class AjaxFunctionsController extends AppController{
 
 		$username = $this->Session->read('username');
 		$customer_id = trim($_POST['applicant_id']);
-		$this->loadModel('DmiUserRoles');
+
+
 		$check_user_role = $this->DmiUserRoles->find('all',array('conditions'=>array('user_email_id IS'=>$username)))->first();
 		$this->loadComponent('Randomfunctions');
+
 		$resultArray = $this->Randomfunctions->dashboardApplicationSearch($customer_id,$check_user_role);
 
 		//below rejected data fetch using customer id if rejected status is rejected by laxmi on 13-01-2023
-		$this->loadModel('DmiRejectedApplLogs');
 		$rejectedData = $this->DmiRejectedApplLogs->find('all',array('conditions'=>array('customer_id IS'=>$customer_id)))->last();
 
 		//Check If application is surrender - Akash [10-05-2023]
@@ -1799,8 +1848,7 @@ class AjaxFunctionsController extends AppController{
 	public function checkIfReplicaCodeIsExist() {
 
 		$this->autoRender = false;
-		//Load Models
-		$this->loadModel('DmiRoOffices');
+
 		$replica_code = $_POST['replica_code'];
 
 		$check_If_exist = $this->DmiRoOffices->find('all')->select(['replica_code'])->where(['OR' => [['delete_status IS NULL'] ,['delete_status ='=>'no']]])->where(['replica_code' => $replica_code])->first();
@@ -1824,8 +1872,7 @@ class AjaxFunctionsController extends AppController{
 	public function checkIfOfficeShortCodeIsExist() {
 
 		$this->autoRender = false;
-		//Load Models
-		$this->loadModel('DmiRoOffices');
+
 		$short_code = $_POST['short_code'];
 
 		$check_If_exist = $this->DmiRoOffices->find('all')->select(['short_code'])->where(['OR' => [['delete_status IS NULL'] ,['delete_status ='=>'no']]])->where(['short_code' => $short_code])->first();
@@ -1849,8 +1896,7 @@ class AjaxFunctionsController extends AppController{
 	public function checkIfStateAlreadyExist() {
 
 		$this->autoRender = false;
-		//Load Models
-		$this->loadModel('DmiStates');
+
 		$state_name = $_POST['state_name'];
 		$check_if_exist = $this->DmiStates->find()->select(['state_name'])->where(['state_name' => $state_name,'delete_status IS NULL'])->first();
 
@@ -1873,8 +1919,7 @@ class AjaxFunctionsController extends AppController{
 	public function checkIfDistrictAlreadyExist() {
 
 		$this->autoRender = false;
-		//Load Models
-		$this->loadModel('DmiDistricts');
+
 		$district_name = $_POST['district_name'];
 		$check_if_exist = $this->DmiDistricts->find()->select(['district_name'])->where(['district_name' => $district_name,'delete_status IS NULL'])->first();
 
@@ -1896,7 +1941,7 @@ class AjaxFunctionsController extends AppController{
 	public function checkMobileNumberExistInChemistTable() {
 
 		$this->autoRender = false;
-		$this->loadModel('DmiChemistRegistrations');
+
 		$mobile = base64_encode($_POST['mobile']); //for email encoding
 
 		$check_if_exist = $this->DmiChemistRegistrations->find()->select(['mobile'])->where(['mobile IS' => $mobile])->first();
@@ -1918,7 +1963,7 @@ class AjaxFunctionsController extends AppController{
 	public function checkEmailNumberExistInChemistTable() {
 
 		$this->autoRender = false;
-		$this->loadModel('DmiChemistRegistrations');
+
 		$mobile = base64_encode($_POST['email']); //for email encoding
 
 		$check_if_exist = $this->DmiChemistRegistrations->find()->select(['email'])->where(['email IS' => $mobile])->first();
@@ -1940,7 +1985,7 @@ class AjaxFunctionsController extends AppController{
 	public function checkEmailExistInCustomerTable() {
 
 		$this->autoRender = false;
-		$this->loadModel('DmiCustomers');
+
 		$email = base64_encode($_POST['email']); //for email encoding
 		$check_if_exist = $this->DmiCustomers->find()->select(['email'])->where(['email IS' => $email])->first();
 
@@ -1963,7 +2008,7 @@ class AjaxFunctionsController extends AppController{
 	public function checkMobileNumberExistInCustomersTable() {
 
 		$this->autoRender = false;
-		$this->loadModel('DmiCustomers');
+
 		$mobile = base64_encode($_POST['mobile']); //for email encoding
 
 		$check_if_exist = $this->DmiCustomers->find()->select(['mobile'])->where(['mobile IS' => $mobile])->first();
@@ -2003,7 +2048,7 @@ class AjaxFunctionsController extends AppController{
 			$condition = array('email IS'=>$username);
 		}
 
-		$this->loadModel($model);
+        $model = $this->AqcmsWrapper->customeLoadModel($model);
 		$get_password = $_POST['Oldpassword'];
 		$oldPassword = hash('sha512',$get_password);
 
@@ -2034,7 +2079,7 @@ class AjaxFunctionsController extends AppController{
 	public function checkMobileNumberExistInUsersTable() {
 
 		$this->autoRender = false;
-		$this->loadModel('DmiUsers');
+
 		$mobile = base64_encode($_POST['phone']); //for email encoding
 
 		$check_if_exist = $this->DmiUsers->find()->select(['phone'])->where(['phone IS' => $mobile])->first();
@@ -2059,7 +2104,7 @@ class AjaxFunctionsController extends AppController{
 	public function checkEmailExistInUsersTable() {
 
 		$this->autoRender = false;
-		$this->loadModel('DmiUsers');
+
 		$email = base64_encode($_POST['email']); //for email encoding
 		$check_if_exist = $this->DmiUsers->find()->select(['email'])->where(['email IS' => $email])->first();
 
@@ -2081,8 +2126,7 @@ class AjaxFunctionsController extends AppController{
 
 		$this->autoRender = false;
 		$commodity_code = trim($_POST['commodity']);
-		//Load Model
-		$this->loadModel('DmiReplicaChargesDetails');
+
 		$checkIfExist = $this->DmiReplicaChargesDetails->find()->select(['id'])->where(['commodity_code IS'=>$commodity_code])->first();
 
 		if (empty($checkIfExist)) {
@@ -2112,9 +2156,6 @@ class AjaxFunctionsController extends AppController{
 	public function checkCertificateNumber() {
 
 		$this->autoRender = false;
-		//Load Models
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiOldApplicationCertificateDetails');
 
 		$certification_no = trim($_POST['certification_no']); //for email encoding
 		$duplicate_certification_no = $this->DmiOldApplicationCertificateDetails->find('all')->where(['certificate_no IS'=>$certification_no])->first();
@@ -2138,9 +2179,7 @@ class AjaxFunctionsController extends AppController{
 	public function attachedPpLabDelete(){
 
 		$this->autoRender = false;
-		$this->loadModel('DmiCaPpLabMapings');
-		$this->loadModel('DmiCaPpLabActionLogs');
-		$this->loadModel('DmiCaMappingOwnLabDetails');
+
 
 		$record_id = $_POST['record_id'];
 		$remark = $_POST['remark'];
@@ -2214,8 +2253,6 @@ class AjaxFunctionsController extends AppController{
 	public function getAllotedReplicaList(){
 
 		$this->autoRender = false;
-		$this->loadModel('DmiCaPpLabMapings');
-		$this->loadModel('DmiCaMappingOwnLabDetails');
 
 		$record_id = $_POST['record_id'];
 
@@ -2324,7 +2361,7 @@ class AjaxFunctionsController extends AppController{
 	public function addSampleDetails() {
 
 		$this->autoRender = false;
-		$this->loadModel('DmiCheckSamples');
+
 		// call customes Controller
 		$CustomersController = new CustomersController;
 		$customer_id = $this->Customfunctions->sessionCustomerID();
@@ -2360,7 +2397,6 @@ class AjaxFunctionsController extends AppController{
 	public function addPackageDetails() {
 
 		$this->autoRender = false;
-		$this->loadModel('DmiRtiPackerDetails');
 
 		$customer_id = $this->Customfunctions->sessionCustomerID();
 
@@ -2391,7 +2427,6 @@ class AjaxFunctionsController extends AppController{
 	public function editSampleId() {
 
 		$this->autoRender = false;
-		$this->loadModel('DmiCheckSamples');
 
 		$customer_id = $this->Customfunctions->sessionCustomerID();
 		$firm_type = $this->Customfunctions->firmType($customer_id);
@@ -2454,7 +2489,6 @@ class AjaxFunctionsController extends AppController{
 	public function deleteSampleId() {
 
 		$this->Session->delete('edit_sample_id');
-		$this->loadModel('DmiCheckSamples');
 
 		$customer_id = $this->Customfunctions->sessionCustomerID();
 		$firm_type = $this->Customfunctions->firmType($customer_id);
@@ -2482,9 +2516,6 @@ class AjaxFunctionsController extends AppController{
 	public function editPackId() {
 
 		$this->autoRender = false;
-		$this->loadModel('DmiRtiPackerDetails');
-		$this->loadModel('DmiAllTblsDetails');
-
 
 		$customer_id = $this->Customfunctions->sessionCustomerID();
 
@@ -2552,7 +2583,7 @@ class AjaxFunctionsController extends AppController{
 	public function deletePackId() {
 
 		$this->Session->delete('edit_pack_id');
-		$this->loadModel('DmiRtiPackerDetails');
+
 		$customer_id = $this->Customfunctions->sessionCustomerID();
 		$record_id = $_POST['delete_pack_id'];
 		$packer_delete_result = $this->DmiRtiPackerDetails->deletePackDetails($record_id);// call to custome function from model
@@ -2575,8 +2606,6 @@ class AjaxFunctionsController extends AppController{
 		$this->autoRender = false;
 
 		$packer_id = $_POST['packer_id'];
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiAllTblsDetails');
 
 		// updated query by shankhpal shende on 19/05/2023
 		$tbl_list = $this->DmiAllTblsDetails->find('list',array('keyField'=>'tbl_code','valueField'=>'tbl_name', 'conditions'=>array('customer_id IN'=>$packer_id,'delete_status IS NULL')))->toList();
@@ -2603,7 +2632,7 @@ class AjaxFunctionsController extends AppController{
 		$this->autoRender = false;
 
 		$this->request->getSession()->write('pendingwork', 'yes');
-		$this->loadModel('DmiUsers');
+
 		$InchargeId = $this->Session->read('username');
 
 		$responce = $this->Customfunctions->getSingleOrAllUserAppliResult($InchargeId);
@@ -2619,9 +2648,6 @@ class AjaxFunctionsController extends AppController{
 	public function addReplicaAllotmentData(){
 
 		$this->autoRender = false;
-		$this->loadModel('DmiBgrCommodityReportsAddmore');
-
-
 
 		$financialYear = $_SESSION['financialYear'];
 		$startMonthYear=null;
@@ -2677,14 +2703,12 @@ class AjaxFunctionsController extends AppController{
 		$commodity_id = $_POST['commodity_id'];
 
 		//get charge from table
-		$this->loadModel('DmiReplicaChargesDetails');
-		$this->loadModel('DmiReplicaUnitDetails');
 
 		$get_charge = $this->DmiReplicaChargesDetails
-    ->find('all', [
-        'conditions' => ['commodity_code' => $commodity_id]
-    ])
-    ->first();
+        ->find('all', [
+            'conditions' => ['commodity_code' => $commodity_id]
+        ])
+        ->first();
 
 		if (!empty($get_charge)) {
 
@@ -2711,7 +2735,6 @@ class AjaxFunctionsController extends AppController{
 	public function addBgrDetails() {
 
         $this->autoRender = false;
-        $this->loadModel('DmiBgrCommodityReportsAddmore');
 
         $financialYear = $_SESSION['financialYear'];
         $startMonthYear=null;
@@ -2798,8 +2821,6 @@ class AjaxFunctionsController extends AppController{
      public function addedBgrDetails(){
 
         $this->autoRender = false;
-        $this->loadModel('DmiBgrCommodityReportsAddmore');
-        $this->loadModel('MCommodity');
 
         $customer_id = $_SESSION['packer_id'];
 
@@ -2836,11 +2857,10 @@ class AjaxFunctionsController extends AppController{
 	public function editBgrDetails(){
 
 		$this->autoRender = false;
-		$this->loadModel('DmiBgrCommodityReportsAddmore');
 
 		$updatedData = $this->request->getData();
 		// Assuming the primary key field is 'id'
-    $editbgrid = $updatedData['id'];
+        $editbgrid = $updatedData['id'];
 		$this->Session->write('editbgrid',$editbgrid);
 		$bgrReportData = $this->DmiBgrCommodityReportsAddmore->getBgrData($editbgrid);
 		// pr($bgrReportData);die;
@@ -2855,8 +2875,6 @@ class AjaxFunctionsController extends AppController{
 
 		$this->autoRender = false;
 		$this->Session->delete('editbgrid');
-		$this->loadModel('DmiBgrCommodityReportsAddmore');
-		$this->loadModel('DmiBgrCommodityReports');
 
 		//$record_id = $id;
 		$deletedData = $this->request->getData();
@@ -2879,7 +2897,7 @@ class AjaxFunctionsController extends AppController{
 	public function getTotalReplicaCharge(){
 
 		$this->autoRender = false;
-		$this->loadModel('DmiBgrCommodityReportsAddmore');
+
 		$ChemistController = new ChemistController;
 
 		if(isset($_SESSION['packer_id'])){
@@ -2913,7 +2931,6 @@ class AjaxFunctionsController extends AppController{
 	public function getTotalProgressiveRevenue(){
 
 		$this->autoRender = false;
-		$this->loadModel('DmiBgrCommodityReports');
 
 		if(isset($_SESSION['packer_id'])){
 			$customer_id = $_SESSION['packer_id'];

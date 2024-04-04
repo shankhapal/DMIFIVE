@@ -10,38 +10,111 @@ use Cake\Collection\Collection;
 
 class ApplicationController extends AppController{
 
-	var $name = 'Application';
-
+	private $DmiSmsEmailTemplates;
+    private $DmiChemistComments;
+    private $DmiPackingTypes;
+    private $DmiApplicationCharges;
+    private $MCommodity;
+    private $MCommodityCategory;
+    private $DmiRenewalSubmissionLogs;
+    private $DmiGrantCertificatesPdfs;
+    private $DmiFlowWiseTablesLists;
+    private $DmiChangeFirms;
+    private $DmiAdpPersonDetails;
+    private $DmiLaboratoryChemistsDetails;
+    private $DmiAllTblsDetails;
+    private $DmiBgrCommodityReports;
+    private $DmiChangeAllTblsDetails;
+    private $DmiChangeApplDetails;
+    private $DmiAdpGrantCertificatePdfs;
+    private $DmiCommonScrutinyFlowDetails;
+    private $DmiBgrGrantCertificatePdfs;
+    private $DmiAllDirectorsDetails;
+    private $DmiChemistPaymentDetails;
+    private $DmiChangeFinalSubmits;
+    private $DmiChangeSelectedFields;
+    private $DmiChangeFieldLists;
+    private $DmiUsers;
+    private $DmiAuthFirmRegistrations;
+    private $DmiChemistRegistrations;
+    private $DmiFirms;
 	public function initialize(): void
 	{
 		parent::initialize();
 
-		$this->loadComponent('Customfunctions');
-		$this->loadComponent('Authentication');
-		$this->loadComponent('Paymentdetails');
-		$this->loadComponent('Mastertablecontent');
-		$this->loadComponent('Communication');
-		$this->loadComponent('Progressbar');
-		$this->loadComponent('Romoioapplicantcommunicationactions');
-		$this->loadComponent('Flowbuttons');
-		$this->loadComponent('Randomfunctions');
-		$this->loadModel('DmiSmsEmailTemplates');
-		//load chemist payment details model for chemist application by laxmi on 03-05-2023
-		$this->loadModel('DmiChemistPaymentDetails');
+        // added by shankhpal on 27-03-2024
+        $components = [
+            'Romoioapplicantcommunicationactions',
+            'Customfunctions',
+            'Authentication',
+            'Paymentdetails',
+            'Communication',
+            'Progressbar',
+            'Flowbuttons',
+            'Randomfunctions',
+            'Beforepageload',
+            'AqcmsWrapper',
+        ];
 
+        foreach($components as $component){
+            $this->loadComponent($component);
+        }
 
 		$this->viewBuilder()->setHelpers(['Form','Html','Time']);
 
 		$this->Session = $this->getRequest()->getSession();
+
+        // Call the loadAllModels method to load necessary models.
+        $this->loadAllModels();
+
 	}
 
+
+    /**
+     * Loads all necessary models for the current controller.
+     * This method is responsible for loading models required for the controller's functionality.
+     * Author: Shankhpal Shende
+     * Date: 04-04-2024
+     */
+    private function loadAllModels(): void {
+
+        $this->DmiSmsEmailTemplates = $this->AqcmsWrapper->customeLoadModel('DmiSmsEmailTemplates');
+        $this->DmiChemistComments = $this->AqcmsWrapper->customeLoadModel('DmiChemistComments');
+        $this->DmiPackingTypes = $this->AqcmsWrapper->customeLoadModel('DmiPackingTypes');
+        $this->DmiApplicationCharges = $this->AqcmsWrapper->customeLoadModel('DmiApplicationCharges');
+        $this->MCommodity = $this->AqcmsWrapper->customeLoadModel('MCommodity');
+        $this->MCommodityCategory = $this->AqcmsWrapper->customeLoadModel('MCommodityCategory');
+        $this->DmiRenewalSubmissionLogs = $this->AqcmsWrapper->customeLoadModel('DmiRenewalSubmissionLogs');
+        $this->DmiGrantCertificatesPdfs = $this->AqcmsWrapper->customeLoadModel('DmiGrantCertificatesPdfs');
+        $this->DmiFlowWiseTablesLists = $this->AqcmsWrapper->customeLoadModel('DmiFlowWiseTablesLists');
+        $this->DmiChangeFirms = $this->AqcmsWrapper->customeLoadModel('DmiChangeFirms');
+        $this->DmiAdpPersonDetails = $this->AqcmsWrapper->customeLoadModel('DmiAdpPersonDetails');
+        $this->DmiLaboratoryChemistsDetails = $this->AqcmsWrapper->customeLoadModel('DmiLaboratoryChemistsDetails');
+        $this->DmiAllTblsDetails = $this->AqcmsWrapper->customeLoadModel('DmiAllTblsDetails');
+        $this->DmiBgrCommodityReports = $this->AqcmsWrapper->customeLoadModel('DmiBgrCommodityReports');
+        $this->DmiChangeAllTblsDetails = $this->AqcmsWrapper->customeLoadModel('DmiChangeAllTblsDetails');
+        $this->DmiChangeApplDetails = $this->AqcmsWrapper->customeLoadModel('DmiChangeApplDetails');
+        $this->DmiAdpGrantCertificatePdfs = $this->AqcmsWrapper->customeLoadModel('DmiAdpGrantCertificatePdfs');
+        $this->DmiCommonScrutinyFlowDetails = $this->AqcmsWrapper->customeLoadModel('DmiCommonScrutinyFlowDetails');
+        $this->DmiBgrGrantCertificatePdfs = $this->AqcmsWrapper->customeLoadModel('DmiBgrGrantCertificatePdfs');
+        $this->DmiAllDirectorsDetails = $this->AqcmsWrapper->customeLoadModel('DmiAllDirectorsDetails');
+        $this->DmiChemistPaymentDetails = $this->AqcmsWrapper->customeLoadModel('DmiChemistPaymentDetails');
+        $this->DmiChangeFinalSubmits = $this->AqcmsWrapper->customeLoadModel('DmiChangeFinalSubmits');
+        $this->DmiChangeSelectedFields = $this->AqcmsWrapper->customeLoadModel('DmiChangeSelectedFields');
+        $this->DmiChangeFieldLists = $this->AqcmsWrapper->customeLoadModel('DmiChangeFieldLists');
+        $this->DmiUsers = $this->AqcmsWrapper->customeLoadModel('DmiUsers');
+        $this->DmiAuthFirmRegistrations = $this->AqcmsWrapper->customeLoadModel('DmiAuthFirmRegistrations');
+        $this->DmiChemistRegistrations = $this->AqcmsWrapper->customeLoadModel('DmiChemistRegistrations');
+        $this->DmiFirms = $this->AqcmsWrapper->customeLoadModel('DmiFirms');
+
+    }
 
 	// BEFORE FILTER
 	public function beforeFilter($event) {
 
 		parent::beforeFilter($event);
 
-		$this->loadModel('DmiFirms');
+
 		$customer_last_login = $this->Customfunctions->customerLastLogin();
 		$this->set('customer_last_login',$customer_last_login);
 
@@ -57,7 +130,7 @@ class ApplicationController extends AppController{
 
 			if (preg_match("/^[0-9]+\/[0-9]+\/[A-Z]+\/[0-9]+$/", $this->Session->read('username'),$matches)==1) {
 				//to check the application is new, not old//on 17/10/2017
-				$this->loadModel('DmiFirms');
+
 				$check_applicant_is_new = $this->DmiFirms->find('all',array('conditions'=>array('customer_id IS'=>$this->Session->read('username')/* ,'is_already_granted'=>'no' */)))->first();
 
 				if (!empty($check_applicant_is_new)) {
@@ -68,8 +141,6 @@ class ApplicationController extends AppController{
 
 			} elseif (preg_match("/^[A-Z]+\/[0-9]+\/[0-9]+$/", $this->Session->read('username'),$matches)==1) {
 
-				$this->loadModel('DmiChemistRegistrations');
-
 				$check_applicant_is_new = $this->DmiChemistRegistrations->find('all',array('conditions'=>array('chemist_id IS'=>$this->Session->read('username')/* ,'is_already_granted'=>'no' */)))->first();
 
 				if (!empty($check_applicant_is_new)) {
@@ -79,9 +150,6 @@ class ApplicationController extends AppController{
 				}
 
 			} else {
-
-				$this->loadModel('DmiUsers');
-				$this->loadModel('DmiAuthFirmRegistrations');
 
 				$check_user = $this->DmiUsers->find('all',array('conditions'=>array('email IS'=>$this->Session->read('username'))))->first();
 				//$check_auth_reg = $this->DmiAuthFirmRegistrations->find('all',array('conditions'=>array('firm_id'=>$this->Session->read('customer_id'))))->first();
@@ -97,10 +165,7 @@ class ApplicationController extends AppController{
 	public function changeRequest() {
 
 		$this->viewBuilder()->setLayout('secondary_customer');
-		$this->loadModel('DmiChangeSelectedFields');
-		$this->loadModel('DmiChangeFieldLists');
 
-		$this->loadComponent('Beforepageload');
 		$this->Beforepageload->showButtonOnSecondaryHome();
 
 		$customer_id = $this->Customfunctions->sessionCustomerID();
@@ -108,7 +173,6 @@ class ApplicationController extends AppController{
 		$grantDateCondition = $this->Customfunctions->returnGrantDateCondition($customer_id);
 		//$final_submit_details = $this->Customfunctions->finalSubmitDetails($customer_id,'application_form');
 
-		$this->loadModel('DmiChangeFinalSubmits');
 		$final_submit_details = $this->DmiChangeFinalSubmits->find('all', array('conditions'=>array('customer_id IS'=>$customer_id,'status'=>'pending',$grantDateCondition),'order'=>'id DESC'))->first();
 		$this->set('final_submit_details',$final_submit_details);
 
@@ -148,7 +212,7 @@ class ApplicationController extends AppController{
 		//check if change application is already in process and yet granted
 		//then redirect to appl directly, not on field selection window.
 		//applied on 17-03-2023 by Amol
-		$this->loadModel('DmiChangeFinalSubmits');
+
         //updated cond. in below query, added $grantDateCondition on 05-02-2024 by Amol, to solve rejct appl. issue
 		$checkIfInProcess = $this->DmiChangeFinalSubmits->find('all',array('conditions'=>array('customer_id'=>$customer_id,$grantDateCondition),'order'=>'id desc'))->first();
 		if (!empty($checkIfInProcess)) {
@@ -185,8 +249,6 @@ class ApplicationController extends AppController{
 	// FILL FORM FETCH ID
 	public function fillFormFetchId($id,$applicant_type,$mode,$authscrutiny=null) {
 
-
-		$this->loadModel('DmiFirms');
 		$firm_details = $this->DmiFirms->find('all',array('conditions'=>array('id IS'=>$id)))->first();
 
 		$this->Session->write('customer_id',$firm_details['customer_id']);
@@ -255,12 +317,6 @@ class ApplicationController extends AppController{
 		$message_theme = "";
 		$redirect_to = "";
 
-		$this->loadModel('DmiAllDirectorsDetails');
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiChemistRegistrations');
-		//load chemist 	payment details table by laxmi.
-        $this->loadModel('DmiChemistPaymentDetails');
-
 		$application_type = $this->Session->read('application_type');
 		$this->set('application_type',$application_type);
 
@@ -307,9 +363,7 @@ class ApplicationController extends AppController{
 			$chemistDetails = $this->DmiChemistRegistrations->find('all',array('conditions'=>array('chemist_id IS'=>$_SESSION['username'],'delete_status IS NULL')))->first();
 
 			$form_type='BGR';
-			$this->loadModel('DmiBgrGrantCertificatePdfs');
-			//added for checking if application is Granted on 24/11/2022
-            $this->loadModel('DmiBgrCommodityReports');
+
 			$checkIfgrant = $this->DmiBgrGrantCertificatePdfs->find('all',array('conditions'=>array('customer_id IS'=>$customer_id,'status'=>'Granted'),'order'=>'id DESC'))->first();
 
             $reportStatus = $this->DmiBgrCommodityReports->find('all',array('conditions'=>array('customer_id IS'=>$customer_id,'form_status'=>'approved'),'order'=>'id DESC'))->first();
@@ -378,8 +432,6 @@ class ApplicationController extends AppController{
 		$this->Randomfunctions->getCommodityDetails($firm_details,$firm_type);
 
 		// get current section all details
-		$this->loadModel('DmiCommonScrutinyFlowDetails');
-
 		//For Chemist Approval (CHM) Flow HAVING Application Type [4] - Pravin [28-09-2021]
 		if ($application_type == 4) {
 
@@ -391,7 +443,7 @@ class ApplicationController extends AppController{
 		if ($application_type == 8) {
 
 			$form_type='ADP';
-			$this->loadModel('DmiAdpGrantCertificatePdfs');
+
 			//added for checking if application is Granted on 24/11/2022
 			$checkIfgrant = $this->DmiAdpGrantCertificatePdfs->find('all',array('conditions'=>array('customer_id IS'=>$customer_id),'order'=>'id DESC'))->first();
 			$this->set('checkIfgrant',$checkIfgrant);
@@ -425,7 +477,8 @@ class ApplicationController extends AppController{
 		$section_model = $section_details['section_model'];
 		$section = $section_details['section_name'];
 
-		$this->loadModel($section_model);
+        $section_model = $this->AqcmsWrapper->customeLoadModel($section_model);
+
 
 		// get section details
 		$section_form_details = $this->$section_model->sectionFormDetails($customer_id);
@@ -493,8 +546,7 @@ class ApplicationController extends AppController{
 		$last_details = array();
 		$selectedValues = array();
 		if ($application_type == 3) {
-			$this->loadModel('DmiChangeSelectedFields');
-			$this->loadModel('DmiChangeApplDetails');
+
 			$selectedfields = $this->DmiChangeSelectedFields->selectedChangeFields();
 			//$selectedSections = $selectedfields[2];
 			$selectedValues = $selectedfields[0];
@@ -721,10 +773,10 @@ class ApplicationController extends AppController{
 
 			//updated on 13-04-2023 for change request appl
 			if ($application_type == 3) {
-				$this->loadModel('DmiChangeAllTblsDetails');
+
+            //added for checking if application is Granted on 24/11/2022
 				$save_details_result = $this->DmiChangeAllTblsDetails->saveTblDetails($customer_id,$this->request->getData());
 			}else{
-				$this->loadModel('DmiAllTblsDetails');
 				$save_details_result = $this->DmiAllTblsDetails->saveTblDetails($customer_id,$this->request->getData());
 			}
 
@@ -735,7 +787,6 @@ class ApplicationController extends AppController{
 
 		} elseif (null !== $this->request->getData('add_chemist_details')) {
 
-			$this->loadModel('DmiLaboratoryChemistsDetails');
 			$save_details_result = $this->DmiLaboratoryChemistsDetails->saveChemistDetails($customer_id,$this->request->getData());
 
 			if ($save_details_result == 1) {
@@ -745,7 +796,6 @@ class ApplicationController extends AppController{
 
 		} elseif (null !== $this->request->getData('add_renewal_chemist_details')) {
 
-			$this->loadModel('DmiLaboratoryChemistsDetails');
 			$save_details_result = $this->DmiLaboratoryChemistsDetails->saveRenewalChemistDetails($customer_id,$this->request->getData());
 
 			if ($save_details_result == 1) {
@@ -755,7 +805,6 @@ class ApplicationController extends AppController{
 
 		} elseif (null !== $this->request->getData('add_old_chemist_details')) {
 
-			$this->loadModel('DmiLaboratoryChemistsDetails');
 			$save_details_result = $this->DmiLaboratoryChemistsDetails->saveformschemistDetailsAtRenewal($customer_id,$this->request->getData());
 
 			if ($save_details_result == 1) {
@@ -765,8 +814,6 @@ class ApplicationController extends AppController{
 
 		//This condition handle post request for add more button of Person details added by shankhpal shende on 10/11/2022
 		} elseif ($this->request->getData('add_person_details')) {
-
-			$this->loadModel('DmiAdpPersonDetails');
 			// fetch total record from table
 			$total_reocord_id = $this->DmiAdpPersonDetails->find('list',array('conditions'=>array('customer_id IS'=>$customer_id,'delete_status IS NULL')))->toArray();
 
@@ -789,7 +836,6 @@ class ApplicationController extends AppController{
 		//Below Block is added for the Application TYpe -> 8 (ADP Flow) Edit functionality by shankhpal shende on 14-11-2022
 		}elseif($this->request->getData('edit_person_details')) {
 
-			$this->loadModel('DmiAdpPersonDetails');
 			$save_details_result = $this->DmiAdpPersonDetails->savePersonDetails($customer_id,$this->request->getData());
 
 			if ($save_details_result == 1) {
@@ -819,8 +865,6 @@ class ApplicationController extends AppController{
 		$this->set('current_menu', 'menu_payment');
 
 		$this->viewBuilder()->setLayout('application_forms_layout');
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiChangeFirms');
 
 		$customer_id = $this->Customfunctions->sessionCustomerID();
 
@@ -851,13 +895,10 @@ class ApplicationController extends AppController{
 			if ($form_type=='F' && $ca_bevo_applicant=='yes') {
 				$form_type='E';
 			}
-			
+
 			//added call to function to check MSEO or BEVO, on 08-03-2024 by Amol
 			$MseoOrBevo = $this->Customfunctions->checkMseoOrBevo($customer_id);
 			$this->set('MseoOrBevo',$MseoOrBevo);
-
-			$this->loadModel('DmiCommonScrutinyFlowDetails');
-			$this->loadModel('DmiFlowWiseTablesLists');
 
 			$section_details = $this->DmiCommonScrutinyFlowDetails->currentSectionDetails($application_type,$office_type,$firm_type,$form_type,1);
 
@@ -871,8 +912,6 @@ class ApplicationController extends AppController{
 			$selectedSections = array();
 
 			if ($application_type == 3) {
-
-				$this->loadModel('DmiChangeSelectedFields');
 				$selectedfields = $this->DmiChangeSelectedFields->selectedChangeFields();
 				$selectedSections = $selectedfields[2];
 			}
@@ -880,7 +919,8 @@ class ApplicationController extends AppController{
 			$this->set('selectedSections',$selectedSections);
 
 			$payment_table = $this->DmiFlowWiseTablesLists->getFlowWiseTableDetails($application_type,'payment');
-			$this->loadModel($payment_table);
+
+            $payment_table = $this->AqcmsWrapper->customeLoadModel($payment_table);
 
 			// if return value 1 (all forms saved), return value 2 (all forms approved), return value 0 (all forms not saved or approved)
 			//applied on 16-07-2021 by Amol
@@ -893,7 +933,7 @@ class ApplicationController extends AppController{
 				$progress_bar_status = array();
 
 				//to check validity date for remark/reason box
-				$this->loadModel('DmiGrantCertificatesPdfs');
+
 				$last_grant_record =  $this->DmiGrantCertificatesPdfs->find('all',array('fields'=>'date','conditions'=>array('customer_id IS'=>$customer_id),'order'=>'id desc'))->first();
 				$cert_grant_date = $last_grant_record['date'];
 				$validity_date = $this->Customfunctions->getCertificateValidUptoDate($customer_id,$cert_grant_date);
@@ -902,7 +942,6 @@ class ApplicationController extends AppController{
 				$this->set('validity_date',$validity_date);
 
 				//to check if record exist in renewal submission logs table, to fill intimation checkbox and remark field on the page
-				$this->loadModel('DmiRenewalSubmissionLogs');
 				$checkIntimation = $this->DmiRenewalSubmissionLogs->find('all',array('fields'=>'remark','conditions'=>array('customer_id'=>$customer_id,$grantDateCondition),'order'=>'id desc'))->first();
 				$intCheckBox = '';
 				$intRemark = '';
@@ -948,15 +987,10 @@ class ApplicationController extends AppController{
 			// Fetch submitted Payment Details and show // Done By pravin 13/10/2017
 			$this->Paymentdetails->applicantPaymentDetails($customer_id,$firm_details['district'],$payment_table);
 
-			$this->loadModel('DmiApplicationCharges');
-			$this->loadModel('MCommodity');
-			$this->loadModel('MCommodityCategory');
-
-
 			$application_charge = $this->Customfunctions->applicationCharges($application_type,$firm_type);
 			$this->set('application_charge',$application_charge);
 
-			$this->loadModel($payment_table);
+            $payment_table = $this->AqcmsWrapper->customeLoadModel($payment_table);
 			$list_applicant_payment_id = $this->$payment_table->find('list', array('valueField'=>'id','conditions'=>array('customer_id IS'=>$customer_id)))->toArray();
 
 			if (!empty($list_applicant_payment_id)) { $process_query = 'Updated'; } else { $process_query = 'Saved'; }
@@ -966,7 +1000,7 @@ class ApplicationController extends AppController{
 			//to get changed commodities or packing types if applied in change
 			//on 13-04-2023 by Amol
 			if ($application_type == 3) {
-				$this->loadModel('DmiChangeApplDetails');
+
 				$getChangeDetails = $this->DmiChangeApplDetails->find('all',array('fields'=>array('commodity','packing_types'),'conditions'=>array('customer_id IS'=>$customer_id),'order'=>'id desc'))->first();
 				if (!empty($getChangeDetails)) {
 					if (!empty($getChangeDetails['commodity'])){
@@ -1002,7 +1036,6 @@ class ApplicationController extends AppController{
 
 			if (!empty($firm_details['packaging_materials'])) {
 
-				$this->loadModel('DmiPackingTypes');
 				$packaging_materials = explode(',',(string) $firm_details['packaging_materials']); #For Deprecations
 				$packaging_type = $this->DmiPackingTypes->find('list', array('valueField'=>'packing_type', 'conditions'=>array('id IN'=>$packaging_materials)));
 				$this->set('packaging_type',$packaging_type);
@@ -1025,7 +1058,7 @@ class ApplicationController extends AppController{
 			$is_training_completed='';
 			if($application_type == 4){
 				//for auto filled payment  fetch payment from table by laxmi on 13-07-2023 ,
-				$this->loadModel('DmiChemistRegistrations');
+
 				$chemist_reg_details = $this->DmiChemistRegistrations->find('all', array('fields'=>['payment','is_training_completed'], 'conditions'=>['chemist_id IS'=>$customer_id]))->first();
 			   $this->set('payment_amt',$chemist_reg_details['payment']);
 			   $is_training_completed=$chemist_reg_details['is_training_completed'];
@@ -1052,7 +1085,7 @@ class ApplicationController extends AppController{
 						if ($application_type == 2) {
 
 							$grantDateCondition = $this->Customfunctions->returnGrantDateCondition($customer_id);
-							$this->loadModel('DmiRenewalSubmissionLogs');
+
 							//get record id to update the status of renewal final submit
 							$getId = $this->DmiRenewalSubmissionLogs->find('all',array('fields'=>'id','conditions'=>array('customer_id'=>$customer_id,$grantDateCondition),'order'=>'id desc'))->first();
 
@@ -1153,7 +1186,7 @@ class ApplicationController extends AppController{
 				if ($application_type == 2) {
 
 					$grantDateCondition = $this->Customfunctions->returnGrantDateCondition($customer_id);
-					$this->loadModel('DmiRenewalSubmissionLogs');
+
 					//check if record exist with 'submitted status', then status will be 'replied'
 					$getStatus = $this->DmiRenewalSubmissionLogs->find('all',array('fields'=>'id','conditions'=>array('customer_id'=>$customer_id,$grantDateCondition,'status'=>'submitted'),'order'=>'id desc'))->first();
 
@@ -1234,8 +1267,6 @@ class ApplicationController extends AppController{
 			$form_type='FDC';
 		}
 
-		$this->loadModel('DmiCommonScrutinyFlowDetails');
-
 		$section_details = $this->DmiCommonScrutinyFlowDetails->currentSectionDetails($application_type,$office_type,$firm_type,$form_type,1);
 		$allSectionDetails = $this->DmiCommonScrutinyFlowDetails->allSectionList($application_type,$office_type,$firm_type,$form_type);
 		$all_section_status = $this->Customfunctions->formStatusValue($allSectionDetails,$customer_id);
@@ -1306,10 +1337,10 @@ class ApplicationController extends AppController{
 
 		//this condition and code added on 06-07-2022 by Amol
 		if($application_type==3){
-			$this->loadModel('DmiChangeAllTblsDetails');
+
 			$tbl_delete_result = $this->DmiChangeAllTblsDetails->deleteTblDetails($record_id);
 		}else{
-			$this->loadModel('DmiAllTblsDetails');
+
 			$tbl_delete_result = $this->DmiAllTblsDetails->deleteTblDetails($record_id);// call to custome function from model
 		}
 
@@ -1337,7 +1368,7 @@ class ApplicationController extends AppController{
 	public function deletePersonId($id) {
 
 		$record_id = $id;
-		$this->loadModel('DmiAdpPersonDetails');
+
 		$tbl_delete_result = $this->DmiAdpPersonDetails->deletePersonDetails($record_id);// call to custome function from model
 		if ($tbl_delete_result == 1)
 		{
@@ -1348,7 +1379,7 @@ class ApplicationController extends AppController{
 	// DELETE CHEMIST ID
 	public function deleteChemistId($id) {
 		$record_id = $id;
-		$this->loadModel('DmiLaboratoryChemistsDetails');
+
 		$tbl_delete_result = $this->DmiLaboratoryChemistsDetails->deleteChemistDetails($record_id);// call to custome function from model
 		if ($tbl_delete_result == 1)
 		{
@@ -1371,7 +1402,7 @@ class ApplicationController extends AppController{
 		$this->autoRender = false;
 		$id = $_POST['reply_max_id'];
 		$model_name = $_POST['model_name'];
-		$this->loadModel($model_name);
+        $model_name = $this->AqcmsWrapper->customeLoadModel($model_name);
 		$modelEntity = $this->$model_name->newEntity(array(
 
 			'id'=>$id,
@@ -1396,14 +1427,12 @@ class ApplicationController extends AppController{
 		$firm_type = $this->Customfunctions->firmType($customer_id);
 		$form_type = $this->Customfunctions->checkApplicantFormType($customer_id);
 
-		$this->loadModel('DmiChemistComments');
-		$this->loadModel('DmiCommonScrutinyFlowDetails');
 
 		$allSectionDetails = $this->DmiCommonScrutinyFlowDetails->allSectionList($application_type,$office_type,$firm_type,$form_type);
 
 		$section_id = $section_id - 1;
 		$section_model = $allSectionDetails[$section_id]['section_model'];
-		$this->loadModel($section_model);
+        $section_model = $this->AqcmsWrapper->customeLoadModel($section_model);
 		$newEntity = $this->DmiChemistComments->newEntity(array(
 			'id'=>$id,
 			'reply_by'=>'',

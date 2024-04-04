@@ -12,12 +12,14 @@
 	class CommonlistingfunctionsComponent extends Component {
 
 
-		public $controller = null;
-		public $session = null;
 
+        // The other component your component uses
+        protected array $components = ['Randomfunctions','Customfunctions'];  // new way to declare component in cakephp 5 added by shankhpal on 04-04-2024
 		public function initialize(array $config): void {
 			parent::initialize($config);
-            $this->components = ['Session','Customfunctions','Randomfunctions'];  // added by shankhpal on 26-03-2024
+
+
+            // $this->components = ['Session','Customfunctions','Randomfunctions'];  // added by shankhpal on 26-03-2024
 			$this->Controller = $this->_registry->getController();
 			$this->Session = $this->getController()->getRequest()->getSession();
 		}
@@ -1353,6 +1355,7 @@
 
 				//get rejected appl cond.
 				$rej_appl_cond = $this->Randomfunctions->get_rej_cond($each_flow);
+
 				//get rejected appl array.
 				$rej_appl_array = $this->Randomfunctions->get_rejected_appl($each_flow);
 

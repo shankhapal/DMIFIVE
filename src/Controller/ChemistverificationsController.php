@@ -12,15 +12,27 @@ use phpDocumentor\Reflection\Types\This;
 	class ChemistverificationsController extends AppController{
 
 
-        var $name = 'Chemistverifications';
+        private $DmiUserRoles;
+        private $DmiChemistFinalSubmits;
+        private $DmiChemistAllocations;
+        private $DmiChemistRegistrations;
 
         //to initialize our custom requirements
         public function initialize(): void {
             parent::initialize();
 
-            //Load Components
-            $this->loadComponent('RequestHandler');
-            $this->loadComponent('Createcaptcha');
+            // added by shankhpal on 27-03-2024
+            $components = [
+                'RequestHandler',
+                'Createcaptcha',
+                'AqcmsWrapper',
+            ];
+
+            foreach($components as $component){
+                $this->loadComponent($component);
+            }
+
+
             //Set helpers
             $this->viewBuilder()->setHelpers(['Form','Html','Time']);
             //Set Layout
@@ -28,14 +40,27 @@ use phpDocumentor\Reflection\Types\This;
             //Set Session
             $this->Session = $this->getRequest()->getSession();
 
-            //Load Models
-            $this->loadModel('DmiUserRoles');
-            $this->loadModel('DmiChemistFinalSubmits');
-            $this->loadModel('DmiChemistAllocations');
-            $this->loadModel('DmiChemistRegistrations');
+            // Call the loadAllModels method to load necessary models.
+            $this->loadAllModels();
+
+
 
         }
 
+
+        /**
+         * Loads all necessary models for the current controller.
+         * This method is responsible for loading models required for the controller's functionality.
+         * Author: Shankhpal Shende
+         * Date: 04-04-2024
+         */
+        private function loadAllModels(): void {
+             //Load Models
+             $this->DmiUserRoles = $this->AqcmsWrapper->customeLoadModel('DmiUserRoles');
+             $this->DmiChemistFinalSubmits = $this->AqcmsWrapper->customeLoadModel('DmiChemistFinalSubmits');
+             $this->DmiChemistAllocations = $this->AqcmsWrapper->customeLoadModel('DmiChemistAllocations');
+             $this->DmiChemistRegistrations = $this->AqcmsWrapper->customeLoadModel('DmiChemistRegistrations');
+        }
 
         //Before Filter
         public function beforeFilter($event) {
@@ -54,7 +79,7 @@ use phpDocumentor\Reflection\Types\This;
                 if (empty($user_access)) {
 
                     $this->customAlertPage("Sorry You are not authorized to view this page..");
-				    
+
 
                 }
             }

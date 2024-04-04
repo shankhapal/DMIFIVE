@@ -4,47 +4,120 @@ use Cake\Datasource\ConnectionManager;
 
 class ChemistController extends AppController {
 
-    public $name = 'Chemist';
+    private $DmiChemistsResetpassKeys;
+    private $DmiChemistProfileDetails;
+    private $DmiChemistExperienceDetails;
+    private $DmiChemistEducationDetails;
+    private $DmiChemistTrainingDetails;
+    private $DmiChemistFinalSubmits;
+    private $DmiStates;
+    private $DmiDistricts;
+    private $DmiEducationTypes;
+    private $DmiDivisionGrades;
+    private $DmiChemistComments;
+    private $DmiChemistAllotments;
+    private $DmiChemistOtherDetails;
+    private $DmiSmsEmailTemplates;
+    private $DmiChemistAllCurrentPositions;
+    private $DmiChemistAllocations;
+    private $DmiRoOffices;
+    private $DmiUsers;
+    private $DmiChemistLogs;
+    private $DmiCommonScrutinyFlowDetails;
+    private $DmiChemistPaymentDetails;
+    private $DmiChemistGrantCertificatePdfs;
+    private $DmiChemistTrainingAtRo;
+    private $DmiChemistPdfRecords;
+    private $MCommodityCategory;
+    private $DmiChemistProfilePhoto;
+    private $DmiBgrCommodityReports;
+    private $DmiFirms;
+    private $MCommodity;
+    private $DmiRejectedApplLogs;
+    private $DmiApplicationTypes;
+    private $DmiChemistRoToRalLogs;
+    private $DmiChemistRegistrations;
+    private $DmiChemistRalToRoLogs;
 
     //to initialize our custom requirements
     public function initialize(): void {
 
         parent::initialize();
 
-        $this->loadComponent('RequestHandler');
-        $this->loadComponent('Createcaptcha');
-        $this->loadComponent('Authentication');
-        $this->loadComponent('Customfunctions');
-        $this->loadComponent('BiannualGrading'); /// for BGR module added by shankhpal on 20-02-2024
+        // added by shankhpal on 27-03-2024
+        $components = [
+            'RequestHandler',
+            'Createcaptcha',
+            'Authentication',
+            'Customfunctions',
+            'BiannualGrading',
+            'AqcmsWrapper',
+
+        ];
+
+        foreach($components as $component){
+            $this->loadComponent($component);
+        }
+
 
         $this->viewBuilder()->setHelpers(['Form','Html','Time']);
 
         $this->Session = $this->getRequest()->getSession();
 
-        //Load Models
-        $this->loadModel('DmiChemistRegistrations');
-        $this->loadModel('DmiFirms');
-        $this->loadModel('DmiChemistsResetpassKeys');
-        $this->loadModel('DmiChemistLogs');
-        $this->loadModel('DmiChemistProfileDetails');
-        $this->loadModel('DmiChemistExperienceDetails');
-        $this->loadModel('DmiChemistEducationDetails');
-        $this->loadModel('DmiChemistTrainingDetails');
-        $this->loadModel('DmiChemistFinalSubmits');
-        $this->loadModel('DmiStates');
-        $this->loadModel('DmiDistricts');
-        $this->loadModel('DmiEducationTypes');
-        $this->loadModel('DmiDivisionGrades');
-        $this->loadModel('DmiChemistAllocations');
-        $this->loadModel('DmiRoOffices');
-        $this->loadModel('DmiChemistComments');
-        $this->loadModel('DmiChemistAllotments');
-        $this->loadModel('DmiChemistOtherDetails');
-        $this->loadModel('DmiSmsEmailTemplates');
+
+        // Call the loadAllModels method to load necessary models.
+        $this->loadAllModels();
+
+
 
 
     }
 
+
+    /**
+     * Loads all necessary models for the current controller.
+     * This method is responsible for loading models required for the controller's functionality.
+     * Author: Shankhpal Shende
+     * Date: 04-04-2024
+     */
+    private function loadAllModels(): void {
+       //Load Models
+        $this->DmiChemistsResetpassKeys = $this->AqcmsWrapper->customeLoadModel('DmiChemistsResetpassKeys');
+        $this->DmiChemistProfileDetails = $this->AqcmsWrapper->customeLoadModel('DmiChemistProfileDetails');
+        $this->DmiChemistExperienceDetails = $this->AqcmsWrapper->customeLoadModel('DmiChemistExperienceDetails');
+        $this->DmiChemistEducationDetails = $this->AqcmsWrapper->customeLoadModel('DmiChemistEducationDetails');
+        $this->DmiChemistTrainingDetails = $this->AqcmsWrapper->customeLoadModel('DmiChemistTrainingDetails');
+        $this->DmiChemistFinalSubmits = $this->AqcmsWrapper->customeLoadModel('DmiChemistFinalSubmits');
+        $this->DmiStates = $this->AqcmsWrapper->customeLoadModel('DmiStates');
+        $this->DmiDistricts = $this->AqcmsWrapper->customeLoadModel('DmiDistricts');
+        $this->DmiEducationTypes = $this->AqcmsWrapper->customeLoadModel('DmiEducationTypes');
+        $this->DmiDivisionGrades = $this->AqcmsWrapper->customeLoadModel('DmiDivisionGrades');
+        $this->DmiChemistComments = $this->AqcmsWrapper->customeLoadModel('DmiChemistComments');
+        $this->DmiChemistAllotments = $this->AqcmsWrapper->customeLoadModel('DmiChemistAllotments');
+        $this->DmiChemistOtherDetails = $this->AqcmsWrapper->customeLoadModel('DmiChemistOtherDetails');
+        $this->DmiSmsEmailTemplates = $this->AqcmsWrapper->customeLoadModel('DmiSmsEmailTemplates');
+        $this->DmiChemistAllCurrentPositions = $this->AqcmsWrapper->customeLoadModel('DmiChemistAllCurrentPositions');
+        $this->DmiChemistAllocations = $this->AqcmsWrapper->customeLoadModel('DmiChemistAllocations');
+        $this->DmiRoOffices = $this->AqcmsWrapper->customeLoadModel('DmiRoOffices');
+        $this->DmiUsers = $this->AqcmsWrapper->customeLoadModel('DmiUsers');
+        $this->DmiChemistLogs = $this->AqcmsWrapper->customeLoadModel('DmiChemistLogs');
+        $this->DmiCommonScrutinyFlowDetails = $this->AqcmsWrapper->customeLoadModel('DmiCommonScrutinyFlowDetails');
+        $this->DmiChemistPaymentDetails = $this->AqcmsWrapper->customeLoadModel('DmiChemistPaymentDetails');
+        $this->DmiChemistGrantCertificatePdfs = $this->AqcmsWrapper->customeLoadModel('DmiChemistGrantCertificatePdfs');
+        $this->DmiChemistTrainingAtRo = $this->AqcmsWrapper->customeLoadModel('DmiChemistTrainingAtRo');
+        $this->DmiChemistPdfRecords = $this->AqcmsWrapper->customeLoadModel('DmiChemistPdfRecords');
+        $this->MCommodityCategory = $this->AqcmsWrapper->customeLoadModel('MCommodityCategory');
+        $this->DmiChemistProfilePhoto = $this->AqcmsWrapper->customeLoadModel('DmiChemistProfilePhoto');
+        $this->DmiBgrCommodityReports = $this->AqcmsWrapper->customeLoadModel('DmiBgrCommodityReports');
+        $this->DmiFirms = $this->AqcmsWrapper->customeLoadModel('DmiFirms');
+        $this->MCommodity = $this->AqcmsWrapper->customeLoadModel('MCommodity');
+        $this->DmiRejectedApplLogs = $this->AqcmsWrapper->customeLoadModel('DmiRejectedApplLogs');
+        $this->DmiApplicationTypes = $this->AqcmsWrapper->customeLoadModel('DmiApplicationTypes');
+        $this->DmiChemistRoToRalLogs = $this->AqcmsWrapper->customeLoadModel('DmiChemistRoToRalLogs');
+        $this->DmiChemistRegistrations = $this->AqcmsWrapper->customeLoadModel('DmiChemistRegistrations');
+        $this->DmiChemistRalToRoLogs = $this->AqcmsWrapper->customeLoadModel('DmiChemistRalToRoLogs');
+
+    }
 
     // BEFORE FILTER
     public function beforeFilter($event) {
@@ -305,8 +378,7 @@ class ChemistController extends AppController {
 
     public function chemistRegistration() {
 
-        $this->loadModel('MCommodityCategory');
-        $this->loadModel('MCommodity');
+
 
         $this->Session->write('application_dashboard','packer');
         $this->validUser();
@@ -329,7 +401,6 @@ class ChemistController extends AppController {
         //$this->set('commodity_categories',$commodity_categories);
         $username = $this->Session->read('username');
 
-        $this->loadModel('DmiFirms');
         $fetchedFirmCategory= $this->DmiFirms->find('all' , array('conditions'=>['customer_id IS'=>$username]))->first();
 
         $sub_commodities = $fetchedFirmCategory['sub_commodity'];
@@ -657,41 +728,41 @@ class ChemistController extends AppController {
         $this->viewBuilder()->setLayout('chemist_home_layout');
         $this->Session->write('application_dashboard','chemist');
         //chemist application pdf added on chemist dashboard by laxmi on 31-08-2023
-        $this->loadModel('DmiChemistPdfRecords');
+
         $chemist_appl_pdf = $this->DmiChemistPdfRecords->find('list',array('valueField'=>'pdf_file', 'conditions'=>array('customer_id'=>$_SESSION['username'])))->last();
         if(!empty($chemist_appl_pdf)){
             $this->set('chemist_appl_pdf_file', $chemist_appl_pdf);
         }
 
         //chemist application shedule letter display in dashboard added by laxmi b.on 30-12-22
-        $this->loadModel('DmiChemistRalToRoLogs');
+
         $scheduleLetter = $this->DmiChemistRalToRoLogs->find('list',array('valueField'=>'reshedule_pdf', 'conditions'=>array('chemist_id'=>$_SESSION['username'], 'training_completed IS'=>NULL, 'reshedule_status IS'=>'confirm')))->first();
         if(!empty($scheduleLetter)){
             $this->set('pdf_file', $scheduleLetter);
         }
 
         //chemist reliving  letter from RO display in dashboard added by laxmi b.on 03-01-2023
-        $this->loadModel('DmiChemistTrainingAtRo');
+
         $relivingLetter = $this->DmiChemistTrainingAtRo->find('list',array('valueField'=>'pdf_file', 'conditions'=>array('chemist_id'=>$_SESSION['username'])))->first();
         if(!empty($relivingLetter)){
             $this->set('relivingLetter', $relivingLetter);
         }
 
         //grant certificate PDF display in dashboard added by laxmi b.on 05-01-2023
-        $this->loadModel('DmiChemistGrantCertificatePdfs');
+
         $certificates = $this->DmiChemistGrantCertificatePdfs->find('all',array('fields'=>'pdf_file', 'conditions'=>array('customer_id'=>$_SESSION['username'])))->first();
         if(!empty($certificates)){
             $this->set('certificate', $certificates['pdf_file']);
         }
 
         //Ro side Training schedule letter added by laxmi on 6-01-2023
-        $this->loadModel('DmiChemistRoToRalLogs');
+
         $ro_side_schedule_letter = $this->DmiChemistRoToRalLogs->find('all',array('fields'=>'ro_schedule_letter', 'conditions'=>array('chemist_id'=>$_SESSION['username'])))->first();
         if(!empty($ro_side_schedule_letter)){
             $this->set('ro_side_schedule_letter', $ro_side_schedule_letter['ro_schedule_letter']);
         }
         //Ral side Training letter added by laxmi on 6-01-2023
-        $this->loadModel('DmiChemistRalToRoLogs');
+
         $ral_letter = $this->DmiChemistRalToRoLogs->find('all',array('fields'=>'pdf_file', 'conditions'=>array('chemist_id'=>$_SESSION['username'])))->first();
         if(!empty($ral_letter)){
             $this->set('ral_letter', $ral_letter['pdf_file']);
@@ -700,7 +771,7 @@ class ChemistController extends AppController {
         //check application yet to start with ddo or RO or not for withdraw application added by laxmi Bhadade
 
         //for payment confirm or not
-        $this->loadModel('DmiChemistPaymentDetails');
+
         $chemist_id = $this->Session->read('username');
         $is_payment_confirm = $this->DmiChemistPaymentDetails->find('all', ['conditions'=>['customer_id IS'=>$chemist_id]])->last();
 
@@ -715,7 +786,7 @@ class ChemistController extends AppController {
         }
 
         //get packer id in session
-        $this->loadModel('DmiChemistRegistrations');
+
         $chemist_reg = $this->DmiChemistRegistrations->find('all')->where(array('chemist_id IS' => $chemist_id ))->first();
 
         $this->Session->write('packer_id', $chemist_reg['created_by']);
@@ -731,7 +802,6 @@ class ChemistController extends AppController {
 
 
         // get all section all details
-        $this->loadModel('DmiCommonScrutinyFlowDetails');
         $allSectionDetails = $this->DmiCommonScrutinyFlowDetails->allSectionList($application_type,$office_type,$firm_type,$form_type);
 
 
@@ -742,7 +812,6 @@ class ChemistController extends AppController {
         }
 
         // check application is rejected
-        $this->loadModel('DmiRejectedApplLogs');
         $rejectEntry = $this->DmiRejectedApplLogs->find('all')->where(['customer_id IS'=>$chemist_id])->first();
 
         $this->set('rejectEntry', $rejectEntry);
@@ -804,7 +873,6 @@ class ChemistController extends AppController {
 
     public function logout() {
         //LOAD MODEL
-        $this->loadModel('DmiChemistLogs');
         $list_id = $this->DmiChemistLogs->find('list', array('valueField' => 'id', 'conditions' => array('customer_id IS' => $this->Session->read('username'))))->toArray();
 
         if (!empty($list_id)) {
@@ -891,7 +959,7 @@ class ChemistController extends AppController {
         if($username == null){
             $this->customAlertPage("Sorry You are not authorized to view this page..");
         }else{
-            $this->loadModel('DmiUsers');
+
             //check if user entry in Dmi_users table for valid user
             $check_user = $this->DmiUsers->find('all',array('conditions'=>array('email'=>$this->Session->read('username'))))->first();
             if(empty($check_user)){
@@ -914,8 +982,7 @@ class ChemistController extends AppController {
         $this->set('ro_role', $ro_role);
 
         //for chemist information
-        $this->loadModel('DmiChemistRegistrations');
-        $this->loadComponent('Customfunctions');
+
 
         $chemist_details = $this->DmiChemistRegistrations->find('all')->where(array('chemist_id'=>$chemist_id))->first();
         $this->set('chemist_id', $chemist_id);
@@ -926,7 +993,7 @@ class ChemistController extends AppController {
         }
 
         // for Ral Office and RAL information
-        $this->loadModel('DmiRoOffices');
+
         $ral_details =$this->DmiRoOffices->find('all')->select(['id','ro_office'])->where(['office_type IS'=>'RAL', 'delete_status IS '=>NULL])->toArray();
         if(!empty($ral_details)){
             $this->set('ral_details',$ral_details);
@@ -979,7 +1046,7 @@ class ChemistController extends AppController {
             if(!empty($postdata['ro_office']) && !empty($postdata['shedule_from'])  && !empty($postdata['shedule_to'])){
 
 
-                $this->loadModel('DmiChemistRoToRalLogs');
+
                 $chemistId = $postdata['chemist_id'];
 
                 $data = $this->DmiChemistRoToRalLogs->newEntity(array(
@@ -1002,12 +1069,12 @@ class ChemistController extends AppController {
                 if($this->DmiChemistRoToRalLogs->save($data)){
 
                     //to enter RAL Email id in allocation and current position table added by laxmi on 10-01-2023
-                    $this->loadModel('DmiRoOffices');
+
                     $find_office_email_id = $this->DmiRoOffices->find('all',array( 'conditions'=>array('id'=>$data['ral_office_id'])))->first();
                     $office_incharge_id = $find_office_email_id['ro_email_id'];
 
                     //Entry in allocation table for level_3 Ro
-                    $this->loadModel('DmiChemistAllocations');
+
                     $allocationEntity = $this->DmiChemistAllocations->newEntity(array(
                         'customer_id'=>$chemist_id,
                         'level_3'=>$office_incharge_id,
@@ -1018,7 +1085,7 @@ class ChemistController extends AppController {
 
                     if($this->DmiChemistAllocations->save($allocationEntity)){
 
-                        $this->loadModel('DmiChemistAllCurrentPositions');
+
                         //Entry in all applications current position table
                         $customer_id =  $chemist_id;
                         $user_email_id = $office_incharge_id;
@@ -1063,7 +1130,7 @@ class ChemistController extends AppController {
         if($username == null){
             $this->customAlertPage("Sorry You are not authorized to view this page..");
         }else{
-            $this->loadModel('DmiUsers');
+
             //check if user entry in Dmi_users table for valid user
             $check_user = $this->DmiUsers->find('all',array('conditions'=>array('email'=>$this->Session->read('username'))))->first();
             if(empty($check_user)){
@@ -1071,10 +1138,7 @@ class ChemistController extends AppController {
             }
         }
 
-        $this->loadModel('DmiChemistRoToRalLogs');
-        $this->loadModel('DmiRoOffices');
-        $this->loadModel('DmiChemistRegistrations');
-        $this->loadModel('DmiChemistRalToRoLogs');
+
         $this->viewBuilder()->setLayout('admin_dashboard');
 
         $ro_email = $_SESSION['username'];
@@ -1135,7 +1199,7 @@ class ChemistController extends AppController {
             $this->customAlertPage("Sorry You are not authorized to view this page..");
         }
         else{
-            $this->loadModel('DmiUsers');
+
             //check if user entry in Dmi_users table for valid user
             $check_user = $this->DmiUsers->find('all',array('conditions'=>array('email'=>$this->Session->read('username'))))->first();
             if(empty($check_user)){
@@ -1145,13 +1209,6 @@ class ChemistController extends AppController {
 
         $this->viewBuilder()->setLayout('admin_dashboard');
 
-        $this->loadModel('DmiChemistRalToRoLogs');
-        $this->loadModel('DmiRoOffices');
-        $this->loadModel('DmiChemistTrainingAtRo');
-        $this->loadModel('DmiChemistRegistrations');
-        $this->loadModel('DmiChemistAllCurrentPositions');
-        $this->loadModel('DmiChemistRoToRalLogs');
-        $this->loadModel('DmiRejectedApplLogs');
         $conn = ConnectionManager::get('default');
 
         $ro_email = $this->Session->read('username');
@@ -1211,12 +1268,12 @@ class ChemistController extends AppController {
                             $reschedule_status[$i] = $ro_schedule_training['reshedule_status'];
                         }
                         if(!empty($list['appliaction_type'])){
-                        $this->loadModel('DmiApplicationTypes');
+
                         $application_type = $this->DmiApplicationTypes->find('all',array( 'conditions'=>['id IS'=>$list['appliaction_type']]))->first();
                         $appl_type[$i] = $application_type['application_type'];
                         }
 
-                        $this->loadModel('DmiChemistGrantCertificatePdfs');
+
                         $g_status = $this->DmiChemistGrantCertificatePdfs->find('all',array('fields'=>array('pdf_file'), 'conditions'=>['customer_id IS'=>$chemistTableid['chemist_id']]))->last();
                         if(!empty($g_status)){
                             $status[$i] =$g_status['pdf_file'];
@@ -1255,7 +1312,7 @@ class ChemistController extends AppController {
             $this->customAlertPage("Sorry You are not authorized to view this page..");
             exit();
         }else{
-            $this->loadModel('DmiUsers');
+
             //check if user entry in Dmi_users table for valid user
             $check_user = $this->DmiUsers->find('all',array('conditions'=>array('email'=>$this->Session->read('username'))))->first();
 
@@ -1276,7 +1333,7 @@ class ChemistController extends AppController {
             $this->set('ro_last_name',$ro_lname);
 
 
-            $this->loadModel('DmiChemistRalToRoLogs');
+
             $roToRalData = $this->DmiChemistRalToRoLogs->find('all')->where(array('id'=>$id))->first();
             if(!empty($roToRalData)){
                 $this->set('chemist_fname',$roToRalData['chemist_first_name']);
@@ -1307,7 +1364,7 @@ class ChemistController extends AppController {
 
                 if(!empty($postdata['training_completed'] && !empty($postdata['chemist_id']))){
 
-                        $this->loadModel('DmiChemistTrainingAtRo');
+
 
                         $chemist_id = htmlentities($postdata['chemist_id'], ENT_QUOTES);
                         $chemist_first_name = htmlentities($postdata['chemist_first_name'], ENT_QUOTES);
@@ -1363,7 +1420,7 @@ class ChemistController extends AppController {
             exit();
         }
         else{
-            $this->loadModel('DmiUsers');
+
             //check if user entry in Dmi_users table for valid user
             $check_user = $this->DmiUsers->find('all',array('conditions'=>array('email'=>$this->Session->read('username'))))->first();
 
@@ -1385,8 +1442,7 @@ class ChemistController extends AppController {
             $this->set('ro_lname', $ro_lname);
             $this->set('ro_role', $ro_role);
             //for chemist information
-            $this->loadModel('DmiChemistRegistrations');
-            $this->loadModel('DmiChemistRalToRoLogs');
+
 
             $ralToRoDatas = $this->DmiChemistRalToRoLogs->find('all')->where(['id'=>$id])->last();
             $chemist_id =  $ralToRoDatas['chemist_id'];
@@ -1403,7 +1459,7 @@ class ChemistController extends AppController {
 
             }
 
-            $this->loadModel('DmiChemistRoToRalLogs');
+
             $check_reschedule = $this->DmiChemistRoToRalLogs->find('all', ['conditions'=>['chemist_id IS'=> $chemist_id]])->last();
 
 
@@ -1425,7 +1481,7 @@ class ChemistController extends AppController {
                         if(!empty($postdata['shedule_from'])  && !empty($postdata['shedule_to'])){
 
 
-                                $this->loadModel('DmiChemistRoToRalLogs');
+
                                 $chemistId = $postdata['chemist_id'];
                             if(empty($check_reschedule['ro_reschedule_status']) && empty($check_reschedule['is_training_scheduled_ro'])) {
 
@@ -1462,7 +1518,7 @@ class ChemistController extends AppController {
                                 $to   = date('d-m-Y',strtotime(str_replace('/','-',$reqData['shedule_to'])));
 
 
-                                $this->loadModel('DmiChemistRoToRalLogs');
+
                                 $rescheduleDateData = $this->DmiChemistRoToRalLogs->newEntity( array('chemist_id' => $reqData['chemist_id'],
                                 'chemist_first_name' => $reqData['chemist_first_name'],
                                 'chemist_last_name' => $reqData['chemist_last_name'],
@@ -1522,8 +1578,7 @@ class ChemistController extends AppController {
         $reason    = $reqData['remark'];
         $byuser    = $this->Session->read('username');
 
-        $this->loadModel('DmiRejectedApplLogs');
-        $this->loadModel('DmiApplicationTypes');
+
 
         $appl_type = $this->DmiApplicationTypes->find('all',array('fields'=>['id'], 'conditions'=>['application_type'=>$app_type]))->first();
 
@@ -1565,10 +1620,10 @@ class ChemistController extends AppController {
     //to ftech subcommodity after selected commodity category alery selected by CA added by laxmi 14-07-2023
     public function showCommodityDropdown(){
         $this->autoRender = false;
-        $this->loadModel('MCommodity');
+
         $category_id = $_POST['commodity'];
         //fetch subcommodities first from firm table
-        $this->loadModel('DmiFirms');
+
         $sub_commodities = $this->DmiFirms->find('all', array('fields'=>['sub_commodity'], 'conditions'=>['customer_id IS'=>$_SESSION['username']]))->first();
         $sub_commodities_array = explode(',',$sub_commodities['sub_commodity']);
 
@@ -1593,8 +1648,6 @@ class ChemistController extends AppController {
         $customer_id = $_SESSION['packer_id'];
         $referBackApplication = [];
         $this->viewBuilder()->setLayout('chemist_home_layout');
-        $this->loadModel('DmiBgrCommodityReports');
-        $this->loadModel('DmiFirms'); // added by shankhpal for BGR module on 15/11/2023
 
         $alloted_chemist = $this->DmiChemistAllotments->find('all',array('keyField'=>'customer_id','valueField'=>'customer_id','conditions'=>array('chemist_id IS'=>$_SESSION['username'],'status'=>1,'incharge'=>'yes')))->toArray();
 
@@ -1690,7 +1743,7 @@ class ChemistController extends AppController {
                 $file_local_path = $attachment->getStream()->getMetadata('uri');
 
                 $file = $this->Customfunctions->fileUploadLib($file_name,$file_size,$file_type,$file_local_path); // calling file uploading function
-                $this->loadModel('DmiChemistProfilePhoto');
+
                 $chemist_id = htmlentities($this->Session->read('username'), ENT_QUOTES);
                 $data =  $this->DmiChemistProfilePhoto->newEntity(array(
                     'chemist_id' => $chemist_id,
@@ -1731,7 +1784,7 @@ class ChemistController extends AppController {
                 $file_local_path = $attachment->getStream()->getMetadata('uri');
 
                 $file = $this->Customfunctions->fileUploadLib($file_name,$file_size,$file_type,$file_local_path); // calling file uploading function
-                $this->loadModel('DmiChemistProfilePhoto');
+
                 $chemist_id = htmlentities($this->Session->read('username'), ENT_QUOTES);
                 $data =  $this->DmiChemistProfilePhoto->newEntity(array(
                     'chemist_id' => $chemist_id,

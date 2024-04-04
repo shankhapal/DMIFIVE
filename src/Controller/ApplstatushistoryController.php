@@ -3,32 +3,105 @@ namespace App\Controller;
 
 	class ApplstatushistoryController extends AppController{
 
-		var $name = 'Applstatushistory';
+		private $Dmi_applicant_payment_detail;
+        private $Dmi_allocation;
+        private $Dmi_ama_approved_application;
+        private $Dmi_all_applications_current_position;
+        private $Dmi_printing_firm_profile;
+        private $Dmi_renewal_all_current_position;
+        private $Dmi_renewal_allocation;
+        private $Dmi_renewal_applicant_payment_detail;
+        private $Dmi_renewal_mo_ro_comments_detail;
+        private $Dmi_renewal_siteinspection_final_report;
+        private $Dmi_ro_office;
+        private $Dmi_certificate_type;
+        private $Dmi_district;
+        private $Dmi_state;
+        private $Dmi_customer;
+        private $M_commodity_category;
+        private $DmiFirms;
+        private $DmiRoOffices;
+        private $DmiCertificateTypes;
+        private $Dmi_renewal_final_submit;
+        private $Dmi_ho_allocation;
+        private $Dmi_auth_firm_registration;
+        private $Dmi_grant_certificates_pdf;
+        private $Dmi_firms;
+        private $Dmi_final_submit;
+        private $Dmi_mo_ro_comments_detail;
+        private $Dmi_siteinspection_final_report;
+        private $Dmi_ho_comment_reply_detail;
 		//var $layout = 'application_history';
 		//var $components= array('Session', 'RequestHandler','Createcaptcha');
 		//public $helpers = array('Form','Html','Js' => array('Jquery'));
 
-		public function initialize(): void
-    {
-        parent::initialize();
+		public function initialize(): void {
+
+            parent::initialize();
+
+            // added by shankhpal on 27-03-2024
+            $components = [
+                'Createcaptcha',
+                'RequestHandler',
+                'AqcmsWrapper',
+            ];
+
+            foreach($components as $component){
+                $this->loadComponent($component);
+            }
 
 
-				$this->loadComponent('Createcaptcha');
-				$this->loadComponent('RequestHandler');
+            $this->viewBuilder()->setHelpers(['Form','Html','Js'=>array('Jquery')]);
+            $this->viewBuilder()->setLayout('application_history');
 
-				$this->viewBuilder()->setHelpers(['Form','Html','Js'=>array('Jquery')]);
+            // Call the loadAllModels method to load necessary models.
+            $this->loadAllModels();
+        }
 
-				$this->viewBuilder()->setLayout('application_history');
-    }
+
+
+        /**
+         * Loads all necessary models for the current controller.
+         * This method is responsible for loading models required for the controller's functionality.
+         * Author: Shankhpal Shende
+         * Date: 04-04-2024
+         */
+        private function loadAllModels(): void {
+
+            $this->Dmi_applicant_payment_detail = $this->AqcmsWrapper->customeLoadModel('Dmi_applicant_payment_detail');
+			$this->Dmi_allocation = $this->AqcmsWrapper->customeLoadModel('Dmi_allocation');
+			$this->Dmi_ama_approved_application = $this->AqcmsWrapper->customeLoadModel('Dmi_ama_approved_application');
+			$this->Dmi_all_applications_current_position = $this->AqcmsWrapper->customeLoadModel('Dmi_all_applications_current_position');
+			$this->Dmi_printing_firm_profile = $this->AqcmsWrapper->customeLoadModel('Dmi_printing_firm_profile');
+			$this->Dmi_renewal_all_current_position = $this->AqcmsWrapper->customeLoadModel('Dmi_renewal_all_current_position');
+			$this->Dmi_renewal_allocation = $this->AqcmsWrapper->customeLoadModel('Dmi_renewal_allocation');
+			$this->Dmi_renewal_applicant_payment_detail = $this->AqcmsWrapper->customeLoadModel('Dmi_renewal_applicant_payment_detail');
+			$this->Dmi_renewal_mo_ro_comments_detail = $this->AqcmsWrapper->customeLoadModel('Dmi_renewal_mo_ro_comments_detail');
+			$this->Dmi_renewal_siteinspection_final_report = $this->AqcmsWrapper->customeLoadModel('Dmi_renewal_siteinspection_final_report');
+			$this->Dmi_ro_office = $this->AqcmsWrapper->customeLoadModel('Dmi_ro_office');
+			$this->Dmi_certificate_type = $this->AqcmsWrapper->customeLoadModel('Dmi_certificate_type');
+			$this->Dmi_district = $this->AqcmsWrapper->customeLoadModel('Dmi_district');
+			$this->Dmi_state = $this->AqcmsWrapper->customeLoadModel('Dmi_state');
+			$this->Dmi_customer = $this->AqcmsWrapper->customeLoadModel('Dmi_customer');
+			$this->M_commodity_category = $this->AqcmsWrapper->customeLoadModel('M_commodity_category');
+            $this->DmiFirms = $this->AqcmsWrapper->customeLoadModel('DmiFirms');
+			$this->DmiRoOffices = $this->AqcmsWrapper->customeLoadModel('DmiRoOffices');
+			$this->DmiCertificateTypes = $this->AqcmsWrapper->customeLoadModel('DmiCertificateTypes');
+			$this->Dmi_renewal_final_submit = $this->AqcmsWrapper->customeLoadModel('Dmi_renewal_final_submit');
+            $this->Dmi_ho_allocation = $this->AqcmsWrapper->customeLoadModel('Dmi_ho_allocation');
+            $this->Dmi_auth_firm_registration = $this->AqcmsWrapper->customeLoadModel('Dmi_auth_firm_registration');
+			$this->Dmi_grant_certificates_pdf = $this->AqcmsWrapper->customeLoadModel('Dmi_grant_certificates_pdf');
+			$this->Dmi_firms = $this->AqcmsWrapper->customeLoadModel('Dmi_firms');
+            $this->Dmi_final_submit = $this->AqcmsWrapper->customeLoadModel('Dmi_final_submit');
+			$this->Dmi_mo_ro_comments_detail = $this->AqcmsWrapper->customeLoadModel('Dmi_mo_ro_comments_detail');
+			$this->Dmi_siteinspection_final_report = $this->AqcmsWrapper->customeLoadModel('Dmi_siteinspection_final_report');
+			$this->Dmi_ho_comment_reply_detail = $this->AqcmsWrapper->customeLoadModel('Dmi_ho_comment_reply_detail');
+        }
 
 		public function applications_list(){
 
 			$this->viewBuilder()->setLayout('admin_dashboard');
-			$this->loadModel('DmiFirms');
-			$this->loadModel('DmiRoOffices');
-			$this->loadModel('DmiCertificateTypes');
-			$this->loadModel('Dmi_final_submit');
-			$this->loadModel('Dmi_renewal_final_submit');
+
 
 			$inprogress_napp_with_ro = array(); $inprogress_rapp_with_ro = array();
 
@@ -157,32 +230,7 @@ namespace App\Controller;
 
 		public function application_status_history($id){
 
-			$this->loadModel('Dmi_applicant_payment_detail');
-			$this->loadModel('Dmi_final_submit');
-			$this->loadModel('Dmi_allocation');
-			$this->loadModel('Dmi_mo_ro_comments_detail');
-			$this->loadModel('Dmi_siteinspection_final_report');
-			$this->loadModel('Dmi_ho_allocation');
-			$this->loadModel('Dmi_ho_comment_reply_detail');
-			$this->loadModel('Dmi_ama_approved_application');
-			$this->loadModel('Dmi_all_applications_current_position');
-			$this->loadModel('Dmi_firms');
-			$this->loadModel('Dmi_printing_firm_profile');
 
-			$this->loadModel('Dmi_renewal_all_current_position');
-			$this->loadModel('Dmi_renewal_allocation');
-			$this->loadModel('Dmi_renewal_applicant_payment_detail');
-			$this->loadModel('Dmi_renewal_final_submit');
-			$this->loadModel('Dmi_renewal_mo_ro_comments_detail');
-			$this->loadModel('Dmi_renewal_siteinspection_final_report');
-
-
-			$this->loadModel('Dmi_ro_office');
-			$this->loadModel('Dmi_certificate_type');
-			$this->loadModel('Dmi_district');
-			$this->loadModel('Dmi_state');
-			$this->loadModel('Dmi_customer');
-			$this->loadModel('M_commodity_category');
 
 			$ro_office_list = $this->Dmi_ro_office->find('list',array('fields'=>array('ro_office'),'conditions'=>array('office_type'=>'RO','delete_status'=>null),'order'=>array('ro_office')));
 			$certificate_type = $this->Dmi_certificate_type->find('list',array('fields'=>array('certificate_type'),'order'=>array('certificate_type')));
@@ -403,11 +451,6 @@ namespace App\Controller;
 		//Checked here, Which user sent the application currently to RO?
 		public function application_came_from($application_id,$application_type){
 
-			$this->loadModel('Dmi_final_submit');
-			$this->loadModel('Dmi_mo_ro_comments_detail');
-			$this->loadModel('Dmi_siteinspection_final_report');
-			$this->loadModel('Dmi_ho_comment_reply_detail');
-
 			if($application_type == 'renewal'){
 				$Dmi_final_submit =  'Dmi_renewal_final_submit';
 				$Dmi_mo_ro_comments_detail = 'Dmi_renewal_mo_ro_comments_detail';
@@ -456,9 +499,6 @@ namespace App\Controller;
 		//Get application type.
 		public function get_application_type($customer_id){
 
-			$this->loadModel('Dmi_auth_firm_registration');
-			$this->loadModel('Dmi_grant_certificates_pdf');
-			$this->loadModel('Dmi_firms');
 			$already_granted = $this->Dmi_firms->find('first',array('fields'=>array('customer_id'),'conditions'=>array('customer_id'=>$customer_id,'is_already_granted'=>'yes')));
 			$granted = $this->Dmi_grant_certificates_pdf->find('first',array('fields'=>array('customer_id'),'conditions'=>array('customer_id'=>$customer_id,'pdf_version'=>'1')));
 			$added_by_auth_user = $this->Dmi_auth_firm_registration->find('first',array('fields'=>array('firm_id'),'conditions'=>array('firm_id'=>$customer_id)));
@@ -502,13 +542,19 @@ namespace App\Controller;
 				$Dmi_applicant_payment_detail =  'Dmi_applicant_payment_detail';
 			}
 
-			$this->loadModel($Dmi_allocation);
-			$this->loadModel($Dmi_final_submit);
-			$this->loadModel($Dmi_mo_ro_comments_detail);
-			$this->loadModel($Dmi_siteinspection_final_report);
-			$this->loadModel($Dmi_applicant_payment_detail);
-			$this->loadModel('Dmi_ho_allocation');
-			$this->loadModel('Dmi_ho_comment_reply_detail');
+            $Dmi_allocation = $this->AqcmsWrapper->customeLoadModel($Dmi_allocation);
+            $Dmi_final_submit = $this->AqcmsWrapper->customeLoadModel($Dmi_final_submit);
+            $Dmi_mo_ro_comments_detail = $this->AqcmsWrapper->customeLoadModel($Dmi_mo_ro_comments_detail);
+            $Dmi_siteinspection_final_report = $this->AqcmsWrapper->customeLoadModel($Dmi_siteinspection_final_report);
+            $Dmi_applicant_payment_detail = $this->AqcmsWrapper->customeLoadModel($Dmi_applicant_payment_detail);
+
+
+			// $this->loadModel($Dmi_allocation);
+			// $this->loadModel($Dmi_final_submit);
+			// $this->loadModel($Dmi_mo_ro_comments_detail);
+			// $this->loadModel($Dmi_siteinspection_final_report);
+			// $this->loadModel($Dmi_applicant_payment_detail);
+
 
 			$pao_details = $this->$Dmi_applicant_payment_detail->find('first',array('joins'=>array(array('table' => 'dmi_pao_details','alias' => 'pao','type' => 'INNER','conditions' => array('pao.id = '.$Dmi_applicant_payment_detail.'.pao_id::integer')),
 																								   array('table' => 'dmi_users','alias' => 'user','type' => 'INNER','conditions' => array('user.id = pao.pao_user_id::integer')),
@@ -592,11 +638,18 @@ namespace App\Controller;
 			$mo_replied_count = ""; $io_replied_count = "";
 
 
-			$this->loadModel($Dmi_allocation);
-			$this->loadModel($Dmi_final_submit);
-			$this->loadModel($Dmi_mo_ro_comments_detail);
-			$this->loadModel($Dmi_siteinspection_final_report);
-			$this->loadModel($Dmi_applicant_payment_detail);
+			// $this->loadModel($Dmi_allocation);
+			// $this->loadModel($Dmi_final_submit);
+			// $this->loadModel($Dmi_mo_ro_comments_detail);
+			// $this->loadModel($Dmi_siteinspection_final_report);
+			// $this->loadModel($Dmi_applicant_payment_detail);
+
+            $Dmi_allocation = $this->AqcmsWrapper->customeLoadModel($Dmi_allocation);
+            $Dmi_final_submit = $this->AqcmsWrapper->customeLoadModel($Dmi_final_submit);
+            $Dmi_mo_ro_comments_detail = $this->AqcmsWrapper->customeLoadModel($Dmi_mo_ro_comments_detail);
+            $Dmi_siteinspection_final_report = $this->AqcmsWrapper->customeLoadModel($Dmi_siteinspection_final_report);
+            $Dmi_applicant_payment_detail = $this->AqcmsWrapper->customeLoadModel($Dmi_applicant_payment_detail);
+
 
 			$applicant_final_submit_date = $this->$Dmi_applicant_payment_detail->find('first',array('fields'=>array('date(modified)'),'conditions'=>array('customer_id'=>$customer_id,'payment_confirmation'=>'pending'),'order'=>'id desc'));
 			$ddo_referred_back_date = $this->$Dmi_applicant_payment_detail->find('first',array('fields'=>array('date(modified)'),'conditions'=>array('customer_id'=>$customer_id,'payment_confirmation'=>'not_confirmed'),'order'=>'id desc'));

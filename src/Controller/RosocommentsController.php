@@ -171,44 +171,34 @@ use Cake\Utility\Hash;
 			$flow_wise_table = $this->DmiFlowWiseTablesLists->find('all',array('conditions'=>array('application_type IS'=>$application_type)))->first();
 
 			$ro_so_comments_table = $flow_wise_table['ro_so_comments'];
-            $this->AqcmsWrapper->customeLoadModel($ro_so_comments_table);
-			// $this->loadModel($ro_so_comments_table);
+            $ro_so_comments_table = $this->AqcmsWrapper->customeLoadModel($ro_so_comments_table);
 
 			$appl_current_pos_table = $flow_wise_table['appl_current_pos'];
-            $this->AqcmsWrapper->customeLoadModel($appl_current_pos_table);
-			// $this->loadModel($appl_current_pos_table);
+            $appl_current_pos_table = $this->AqcmsWrapper->customeLoadModel($appl_current_pos_table);
 
 			$appl_pdf_table = $flow_wise_table['app_pdf_record'];
-            $this->AqcmsWrapper->customeLoadModel($appl_pdf_table);
-			// $this->loadModel($appl_pdf_table);
+            $appl_pdf_table = $this->AqcmsWrapper->customeLoadModel($appl_pdf_table);
 
 			$report_pdf_table = $flow_wise_table['inspection_pdf_record'];
-            $this->AqcmsWrapper->customeLoadModel($report_pdf_table);
-			// $this->loadModel($report_pdf_table);
+            $report_pdf_table = $this->AqcmsWrapper->customeLoadModel($report_pdf_table);
 
 			$allocation_table = $flow_wise_table['allocation'];
-            $this->AqcmsWrapper->customeLoadModel($allocation_table);
-			// $this->loadModel($allocation_table);
+            $allocation_table = $this->AqcmsWrapper->customeLoadModel($allocation_table);
 
 			$final_report_table = $flow_wise_table['inspection_report'];
-            $this->AqcmsWrapper->customeLoadModel($final_report_table);
-			// $this->loadModel($final_report_table);
+            $final_report_table = $this->AqcmsWrapper->customeLoadModel($final_report_table);
 
 			$ama_approved_table = $flow_wise_table['ama_approved_application'];
-            $this->AqcmsWrapper->customeLoadModel($ama_approved_table);
-			// $this->loadModel($ama_approved_table);
+            $ama_approved_table = $this->AqcmsWrapper->customeLoadModel($ama_approved_table);
 
 			$ho_allocation_table = $flow_wise_table['ho_level_allocation'];
-            $this->AqcmsWrapper->customeLoadModel($ho_allocation_table);
-			// $this->loadModel($ho_allocation_table);
+            $ho_allocation_table = $this->AqcmsWrapper->customeLoadModel($ho_allocation_table);
 
 			$ho_comment_reply_table = $flow_wise_table['ho_comment_reply'];
-            $this->AqcmsWrapper->customeLoadModel($ho_comment_reply_table);
-			// $this->loadModel($ho_comment_reply_table);
+            $ho_comment_reply_table = $this->AqcmsWrapper->customeLoadModel($ho_comment_reply_table);
 
 			$DmiLevel4RoApprovedAppl = $flow_wise_table['level_4_ro_approved'];
-            $this->AqcmsWrapper->customeLoadModel($DmiLevel4RoApprovedAppl);
-			// $this->loadModel($DmiLevel4RoApprovedAppl);
+            $DmiLevel4RoApprovedAppl = $this->AqcmsWrapper->customeLoadModel($DmiLevel4RoApprovedAppl);
 
 			$firm_details = $this->DmiFirms->firmDetails($customer_id);
 			$this->set('firm_name',$firm_details['firm_name']);

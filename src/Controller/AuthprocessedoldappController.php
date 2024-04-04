@@ -11,14 +11,85 @@ use Cake\ORM\TableRegistry;
 class AuthprocessedoldappController extends AppController{
 
 
-	var $name = 'Authprocessedoldapp';
+	private  $MCommodity;
+    private  $DmiApplTransferLogs;
+    private  $DmiSponsoredPrintingFirms;
+    private  $DmiApplWithRoMappings;
+    private  $DmiApplWithRoMappingLogs;
+    private  $MCommodityCategory;
+    private  $DmiPackingTypes;
+    private  $DmiRoOffices;
+    private  $DmiOldApplicationCertificateDetails;
+    private  $DmiOldApplicationRenewalDates;
+    private  $DmiFirmHistoryLogs;
+    private  $DmiPermittedOnceUpdations;
+    private  $DmiStates;
+    private  $DmiDocumentLists;
+    private  $DmiCustomersHistoryLogs;
+    private  $DmiSmsEmailTemplates;
+    private  $DmiUserRoles;
+    private  $DmiAuthPrimaryRegistrations;
+    private  $DmiAuthFirmRegistrations;
+    private  $DmiCustomers;
+    private  $DmiFirms;
+    private  $DmiFinalSubmits;
+    private  $DmiCertificateTypes;
+    private  $DmiDistricts;
 
 	public function initialize(): void
 	{
 		parent::initialize();
 
+        // added by shankhpal on 27-03-2024
+        $components = [
+            'AqcmsWrapper',
+            'Customfunctions',
+        ];
+
+        foreach($components as $component){
+            $this->loadComponent($component);
+        }
+
+
+        // Call the loadAllModels method to load necessary models.
+        $this->loadAllModels();
+
 	}
 
+
+    /**
+     * Loads all necessary models for the current controller.
+     * This method is responsible for loading models required for the controller's functionality.
+     * Author: Shankhpal Shende
+     * Date: 04-04-2024
+     */
+    private function loadAllModels(): void {
+
+		$this->MCommodity = $this->AqcmsWrapper->customeLoadModel('MCommodity');
+        $this->DmiApplTransferLogs = $this->AqcmsWrapper->customeLoadModel('DmiApplTransferLogs');
+        $this->DmiSponsoredPrintingFirms = $this->AqcmsWrapper->customeLoadModel('DmiSponsoredPrintingFirms');
+        $this->DmiApplWithRoMappings = $this->AqcmsWrapper->customeLoadModel('DmiApplWithRoMappings');
+        $this->DmiApplWithRoMappingLogs = $this->AqcmsWrapper->customeLoadModel('DmiApplWithRoMappingLogs');
+        $this->MCommodityCategory = $this->AqcmsWrapper->customeLoadModel('MCommodityCategory');
+        $this->DmiPackingTypes = $this->AqcmsWrapper->customeLoadModel('DmiPackingTypes');
+        $this->DmiRoOffices = $this->AqcmsWrapper->customeLoadModel('DmiRoOffices');
+        $this->DmiOldApplicationCertificateDetails = $this->AqcmsWrapper->customeLoadModel('DmiOldApplicationCertificateDetails');
+        $this->DmiOldApplicationRenewalDates = $this->AqcmsWrapper->customeLoadModel('DmiOldApplicationRenewalDates');
+        $this->DmiFirmHistoryLogs = $this->AqcmsWrapper->customeLoadModel('DmiFirmHistoryLogs');
+        $this->DmiPermittedOnceUpdations = $this->AqcmsWrapper->customeLoadModel('DmiPermittedOnceUpdations');
+        $this->DmiStates = $this->AqcmsWrapper->customeLoadModel('DmiStates');
+        $this->DmiDocumentLists = $this->AqcmsWrapper->customeLoadModel('DmiDocumentLists');
+        $this->DmiCustomersHistoryLogs = $this->AqcmsWrapper->customeLoadModel('DmiCustomersHistoryLogs');
+        $this->DmiSmsEmailTemplates = $this->AqcmsWrapper->customeLoadModel('DmiSmsEmailTemplates');
+        $this->DmiUserRoles = $this->AqcmsWrapper->customeLoadModel('DmiUserRoles');
+        $this->DmiAuthPrimaryRegistrations = $this->AqcmsWrapper->customeLoadModel('DmiAuthPrimaryRegistrations');
+        $this->DmiAuthFirmRegistrations = $this->AqcmsWrapper->customeLoadModel('DmiAuthFirmRegistrations');
+        $this->DmiCustomers = $this->AqcmsWrapper->customeLoadModel('DmiCustomers');
+        $this->DmiFirms = $this->AqcmsWrapper->customeLoadModel('DmiFirms');
+        $this->DmiFinalSubmits = $this->AqcmsWrapper->customeLoadModel('DmiFinalSubmits');
+        $this->DmiCertificateTypes = $this->AqcmsWrapper->customeLoadModel('DmiCertificateTypes');
+        $this->DmiDistricts = $this->AqcmsWrapper->customeLoadModel('DmiDistricts');
+    }
 
 
 	// BEFORE FILTER
@@ -56,14 +127,7 @@ class AuthprocessedoldappController extends AppController{
 
 	public function home() {
 
-		$this->loadModel('DmiUserRoles');
-		$this->loadModel('DmiAuthPrimaryRegistrations');
-		$this->loadModel('DmiAuthFirmRegistrations');
-		$this->loadModel('DmiCustomers');
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiFinalSubmits');
-		$this->loadModel('DmiCertificateTypes');
-		$this->loadModel('DmiDistricts');
+
 
 		$this->Session->write('fromauth','yes');
 		//check if user have role
@@ -117,14 +181,7 @@ class AuthprocessedoldappController extends AppController{
 
 	public function registerCustomer() {
 
-		$this->loadModel('DmiStates');
-		$this->loadModel('DmiUserRoles');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiDocumentLists');
-		$this->loadModel('DmiCustomers');
-		$this->loadModel('DmiCustomersHistoryLogs');
-		$this->loadModel('DmiSmsEmailTemplates');
-		$this->loadModel('DmiAuthPrimaryRegistrations');
+
 
 
 		//check if user have role
@@ -360,7 +417,6 @@ class AuthprocessedoldappController extends AppController{
 
 	public function fetchPrimaryId($id) {
 
-		$this->loadModel('DmiCustomers');
 		$primary_details = $this->DmiCustomers->find('all',array('conditions'=>array('id IS'=>$id)))->first();
 		$this->Session->write('primary_id',$primary_details['customer_id']);
 		$this->redirect('/authprocessedoldapp/primary_profile');
@@ -376,14 +432,6 @@ class AuthprocessedoldappController extends AppController{
 	// DATE : 09-03-2022
 
 	public function primaryProfile() {
-
-		$this->loadModel('DmiPermittedOnceUpdations');
-		$this->loadModel('DmiCustomers');
-		$this->loadModel('DmiStates');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiDocumentLists');
-		$this->loadModel('DmiCustomersHistoryLogs');
-		$this->loadModel('DmiSmsEmailTemplates');
 
 		$user_access = $this->DmiUserRoles->find('all',array('conditions'=>array('old_appln_data_entry'=>'yes','user_email_id'=>$this->Session->read('username'))))->first();
 		if (empty($user_access)) {
@@ -679,22 +727,7 @@ class AuthprocessedoldappController extends AppController{
 
 	public function addFirm() {
 
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('DmiCertificateTypes');
-		$this->loadModel('DmiPackingTypes');
-		$this->loadModel('DmiStates');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiRoOffices');
-		$this->loadModel('DmiUserRoles');
-		$this->loadModel('DmiOldApplicationCertificateDetails');
-		$this->loadModel('DmiOldApplicationRenewalDates');
-		$this->loadModel('DmiSmsEmailTemplates');
-		$this->loadModel('DmiFirmHistoryLogs');
-		$this->loadModel('DmiAuthPrimaryRegistrations');
-		$this->loadModel('DmiAuthFirmRegistrations');
 
-		$this->loadComponent('Customfunctions');
 
 		$user_access = $this->DmiUserRoles->find('all',array('conditions'=>array('old_appln_data_entry'=>'yes','user_email_id IS'=>$this->Session->read('username'))))->first();
 
@@ -1157,8 +1190,6 @@ class AuthprocessedoldappController extends AppController{
 							$this->DmiAuthFirmRegistrations->save($DmiAuthFirmRegistrationsEntity);
 
 							//This function is used to save Application with RO mapping record while new firm added.
-							$this->loadModel('DmiApplWithRoMappings');
-							$this->loadModel('DmiApplWithRoMappingLogs');
 							$this->DmiApplWithRoMappings->saveRecord($customer_secondary_id,$district_ro_id);
 
 
@@ -1166,7 +1197,7 @@ class AuthprocessedoldappController extends AppController{
 							// Done by Pravin  Bhakare 18-10-2021
 							if ($press_is_sponsored == 'yes') {
 
-								$this->loadModel('DmiSponsoredPrintingFirms');
+
 
 								$sponsored_entity = $this->DmiFirms->newEntity(array(
 									'customer_id'=>$customer_secondary_id,
@@ -1178,7 +1209,6 @@ class AuthprocessedoldappController extends AppController{
 
 								//entry in application tranfer logs table to manage flow as per these appl.
 								//applied on 20-05-2022 by Amol, required entry in this table to manage PP flow btns
-								$this->loadModel('DmiApplTransferLogs');
 
 								//get office of sponserer CA
 								$sponsored_ca_office_id  = $this->DmiApplWithRoMappings->find('all',array('fields'=>array('office_id'),'conditions'=>array('customer_id IS'=>$sponsored_ca),'order'=>'id desc'))->first();
@@ -1261,21 +1291,6 @@ class AuthprocessedoldappController extends AppController{
 
 	// EDIT FIRM
 	public function editFirm() {
-
-		$this->loadComponent('Customfunctions');
-		$this->loadModel('MCommodityCategory');
-		$this->loadModel('DmiCertificateTypes');
-		$this->loadModel('DmiPackingTypes');
-		$this->loadModel('DmiStates');
-		$this->loadModel('DmiDistricts');
-		$this->loadModel('DmiFirms');
-		$this->loadModel('DmiRoOffices');
-		$this->loadModel('DmiOldApplicationCertificateDetails');
-		$this->loadModel('DmiOldApplicationRenewalDates');
-		$this->loadModel('DmiSmsEmailTemplates');
-		$this->loadModel('DmiFirmHistoryLogs');
-		$this->loadModel('MCommodity');
-		$this->loadModel('DmiUserRoles');
 
 		$user_access = $this->DmiUserRoles->find('all',array('conditions'=>array('old_appln_data_entry'=>'yes','user_email_id IS'=>$this->Session->read('username'))))->first();
 
@@ -1513,7 +1528,7 @@ class AuthprocessedoldappController extends AppController{
 	public function primaryUserDetail() {
 
 		$primary_id = $_POST['primary_id'];
-		$this->loadModel('DmiCustomers');
+
 		$primary_user_details = $this->DmiCustomers->find('all',array('conditions'=>array('customer_id IS'=>$primary_id)))->first();
 		if (!empty($primary_user_details)) {
 		$name = $primary_user_details['f_name'].' '.$primary_user_details['l_name'];
